@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: nub_db
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+      - ./dd/backup:/backup
+    ports:
+      - "5444:5432"
+
+  app:
+    container_name: nub_app
+    image: python:latest
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - ${PWD}:/app
+    ports:
+      - "9000:8000"
+    depends_on:
+      - db
