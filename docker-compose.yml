@@ -17,11 +17,10 @@ services:
 
   app:
     container_name: nub_app
-    image: python:latest
     build:
       dockerfile: Dockerfile
-    volumes:
-      - ${PWD}:/app
+#    volumes:
+#      - ${PWD}:/app
     ports:
       - "9000:8000"
     depends_on:
