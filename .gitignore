@@ -1,5 +1,9 @@
-db/data/
+db/
+dd/
 __pycache__/
 venv/
 CA.crt
 data.txt
+node_modules
+.idea
+yarn-error.log
