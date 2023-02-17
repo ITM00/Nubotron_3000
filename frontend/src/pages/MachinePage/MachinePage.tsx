@@ -2,7 +2,16 @@ import { useCallback, useState } from 'react';
 
 import { DocsIcon } from '../../components/icons';
 import { PageHeaderLayout } from '../../components/layouts/PageHeaderLayout';
-import { Button, Card, Checkbox, DataTimePicker, Disclosure, DisclosureButton } from '../../components/ui';
+import {
+    Button,
+    Card,
+    Checkbox,
+    DataTimePicker,
+    Disclosure,
+    DisclosureButton,
+    Select,
+    SelectItem,
+} from '../../components/ui';
 
 type MachineTabs = 'scheme' | 'graph';
 
@@ -52,7 +61,28 @@ export function MachinePage() {
     );
 }
 
+const possibleTime: SelectItem[] = [
+    {
+        id: 1,
+        title: '1 мин',
+    },
+    {
+        id: 2,
+        title: '10 мин',
+    },
+    {
+        id: 3,
+        title: '30 мин',
+    },
+    {
+        id: 4,
+        title: '60 мин',
+    },
+];
+
 function Graph() {
+    const [timeValue, setTimeValue] = useState(possibleTime[0]);
+
     return (
         <div className={'grid grid-cols-[300px_1fr] p-4'}>
             <div className={'border-r border-gray-100 px-1'}>
@@ -97,7 +127,9 @@ function Graph() {
                 </div>
             </div>
             <div className={'px-1'}>
-                <div className={'flex items-center justify-end'}></div>
+                <div className={'flex items-center justify-end'}>
+                    <Select value={timeValue} items={possibleTime} onChange={setTimeValue} />
+                </div>
             </div>
         </div>
     );

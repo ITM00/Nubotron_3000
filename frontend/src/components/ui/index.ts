@@ -6,3 +6,4 @@ export * from './Loader';
 export * from './Checkbox';
 export * from './DataPickers';
 export * from './Input';
+export * from "./Select"
