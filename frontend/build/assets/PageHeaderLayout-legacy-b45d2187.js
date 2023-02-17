@@ -1,0 +1,1 @@
+System.register(["./index-legacy-8762279d.js"],(function(e,r){"use strict";var t,s;return{setters:[e=>{t=e.i,s=e.v}],execute:function(){e("P",(function(e){return t.jsx("div",{...e,className:s("gap-4 rounded-t-lg border border-gray-80 bg-gray-20 p-2",e.className)})}))}}}));

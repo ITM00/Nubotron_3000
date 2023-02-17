@@ -29,9 +29,8 @@ services:
       - db
 
   frontend:
-    container_name: front
-    build: ./frontend
-    volumes:
-      - './frontend:/app'
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 80:80
