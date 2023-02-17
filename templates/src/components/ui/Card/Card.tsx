@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, forwardRef } from 'react';
 
 export type CardProps = HTMLAttributes<HTMLDivElement>;
 
-export function Card(props: CardProps) {
-    return <div {...props} className={classNames(props.className, 'rounded-lg bg-white')} />;
-}
+export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(props, ref) {
+    return <div {...props} ref={ref} className={classNames(props.className, 'rounded-lg bg-white')} />;
+});

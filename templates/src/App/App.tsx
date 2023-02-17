@@ -4,10 +4,12 @@ import React, { StrictMode, Suspense, lazy } from 'react';
 import { Provider } from 'react-redux';
 import { Link, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
+import { Loader } from '../components/ui';
 import { store } from '../redux/store';
 
 const PanelPage = lazy(() => import('../pages/PanelPage'));
 const MenuPage = lazy(() => import('../pages/MenuPage'));
+const MachinePage = lazy(() => import('../pages/MachinePage'));
 
 const router = createBrowserRouter([
     {
@@ -21,7 +23,7 @@ const router = createBrowserRouter([
     {
         path: '/panel',
         element: (
-            <Suspense fallback={<div>loading</div>}>
+            <Suspense fallback={<Loader />}>
                 <PanelPage />
             </Suspense>
         ),
@@ -29,7 +31,7 @@ const router = createBrowserRouter([
             {
                 path: 'machine',
                 element: (
-                    <Suspense fallback={<div>loading</div>}>
+                    <Suspense fallback={<Loader />}>
                         <MenuPage />
                     </Suspense>
                 ),
@@ -37,8 +39,8 @@ const router = createBrowserRouter([
             {
                 path: 'machine/:id',
                 element: (
-                    <Suspense fallback={<div>loading</div>}>
-                        <div>machine/:id</div>
+                    <Suspense fallback={<Loader />}>
+                        <MachinePage />
                     </Suspense>
                 ),
             },

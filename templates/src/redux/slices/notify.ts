@@ -1,8 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+interface NotifyMessage {
+    id: string;
+    timeCreate: Date;
+    message: string;
+    repeatCount: number;
+}
+
 interface Notify {
     id: string;
-    title: string;
+    exhausterName: string;
+    messages: NotifyMessage[];
     is_check: boolean;
 }
 
@@ -15,13 +23,59 @@ const initialState: State = {
     notifies: [
         {
             id: '1',
-            title: 'Какое-то активноое уведомление',
+            exhausterName: 'У-171',
+            messages: [
+                {
+                    id: '1',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+                {
+                    id: '2',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+                {
+                    id: '3',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+            ],
             is_check: true,
         },
         {
             id: '2',
-            title: 'Какое-то неактивное уведомление',
-            is_check: false,
+            exhausterName: 'У-172',
+            messages: [
+                {
+                    id: '1',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+                {
+                    id: '2',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+                {
+                    id: '3',
+                    timeCreate: new Date(),
+                    message:
+                        'Подшипник вентилятора с приводной стороны - локальная проблема подшипника. Проведите ремонтные работы.',
+                    repeatCount: 17,
+                },
+            ],
+            is_check: true,
         },
     ],
     has_no_checked: true,

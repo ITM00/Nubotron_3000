@@ -1,12 +1,32 @@
+import classNames from 'classnames';
 import { ReactNode, useCallback, useState } from 'react';
-import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md';
 
+import { ArrowDownIcon, ArrowRightIcon } from '../../icons';
 import { Button } from '../Button';
+
+interface DisclosureButtonProps {
+    isActive?: boolean;
+    className?: string;
+}
+
+export function DisclosureButton(props: DisclosureButtonProps) {
+    return (
+        <Button theme={'gray'} className={classNames('h-6 w-6 !p-0', props.className)}>
+            {props.isActive ? (
+                <ArrowRightIcon className={'fill-black m-auto h-4 w-8'} />
+            ) : (
+                <ArrowDownIcon className={'fill-black m-auto h-4 w-8'} />
+            )}
+        </Button>
+    );
+}
 
 export interface DisclosureProps {
     title: string;
     initOpen?: boolean;
     children?: string | ReactNode;
+    classNameTitle?: string;
+    classNameBody?: string;
 }
 
 export function Disclosure(props: DisclosureProps) {
@@ -17,18 +37,12 @@ export function Disclosure(props: DisclosureProps) {
     }, []);
 
     return (
-        <div className={'flex flex-col gap-2 '}>
-            <div className={'flex cursor-pointer items-center gap-2'} onClick={clickHandler}>
-                <Button theme={'gray'} className={'h-6 w-6 !p-0'}>
-                    {isActive ? (
-                        <MdKeyboardArrowRight className={'m-auto h-4  w-8'} />
-                    ) : (
-                        <MdKeyboardArrowDown className={'m-auto h-4  w-8'} />
-                    )}
-                </Button>
-                <div className={'text-sm font-bold'}>{props.title}</div>
+        <div className={'flex flex-col gap-2'}>
+            <div className={'flex cursor-pointer items-center gap-1'} onClick={clickHandler}>
+                <DisclosureButton isActive={isActive} />
+                <div className={props.classNameTitle}>{props.title}</div>
             </div>
-            {isActive && <div className={'ml-6'}>{props.children}</div>}
+            {isActive && <div className={classNames('ml-7', props.classNameBody)}>{props.children}</div>}
         </div>
     );
 }
