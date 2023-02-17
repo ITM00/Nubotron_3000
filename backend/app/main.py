@@ -8,4 +8,4 @@ app = FastAPI()
 
 @app.get("/")
 def home() -> dict[str, str]:
-    return {"status": "Success"}
+    return {"status": "Success 222"}
