@@ -10,6 +10,7 @@ from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from aiokafka.helpers import create_ssl_context
 from .consumer import add_data_in_db, conn
 
+
 app = FastAPI()
 
 topic = 'zsmk-9433-dev-01'
@@ -30,6 +31,7 @@ consumer = AIOKafkaConsumer(
     ssl_context=context,
 )
 
+
 async def consume():
     await consumer.start()
     try:
@@ -41,6 +43,7 @@ async def consume():
             add_data_in_db(s)
     finally:
         await consumer.stop()
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -54,13 +57,13 @@ async def shutdown_event():
 
 @app.get("/api/get_all_data")
 def get_all_data(request: Request) -> dict[str, int]:
-    "тут отдаем исторические данные"
+    """Тут отдаем исторические данные"""
     return {"request": 200}
 
 
 @app.get("/api/get_current_data")
 def get_current_data():
-    "тут получаем актуальный последний из кафки и отдаем на фронт"
+    """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     conn = psycopg2.connect(
         host='db',
         port=5432,
