@@ -69,6 +69,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
     step = int(interval) if interval.endswith("m") else int(interval) * 60
+    cur = conn.cursor()
     cur.execute(f"SELECT id from consumer_data where d_create::text like {start_date}")
     satrt_id = cur.fetchall()[0][0]
     cur.execute(f"SELECT id from consumer_data where d_create::text like {finish_date}")
