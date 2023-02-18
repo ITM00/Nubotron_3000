@@ -1,5 +1,5 @@
-db/
-dd/
+db/backup
+db/data
 __pycache__/
 venv/
 CA.crt
