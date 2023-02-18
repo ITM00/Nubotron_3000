@@ -1,15 +1,16 @@
 from fastapi import FastAPI, Request, WebSocket
 import json
-import psycopg2
 import asyncio
+import psycopg2
 from aiokafka import AIOKafkaConsumer
 from aiokafka.helpers import create_ssl_context
-from .consumer import add_data_in_db, get_last_record_from_db
+from .db_interactions import add_data_in_db, get_last_record_from_db
 from .mapper import map_exauster_data
 from .pull_history import pull_history
 
 
 app = FastAPI()
+
 
 topic = 'zsmk-9433-dev-01'
 loop = asyncio.get_event_loop()
@@ -30,7 +31,8 @@ consumer = AIOKafkaConsumer(
 )
 
 
-async def consume():
+async def consume() -> None:
+    """Читает последнее сообщение из кафки и записывает его в бд"""
     await consumer.start()
     try:
         async for msg in consumer:
@@ -45,19 +47,21 @@ async def consume():
 
 
 @app.on_event("startup")
-async def startup_event():
+async def startup() -> None:
+    """Ставит задачу на пожирание сообщений из кафки при запуске app"""
     await pull_history(topic)
     loop.create_task(consume())
 
 
 @app.on_event("shutdown")
-async def shutdown_event():
+async def shutdown() -> None:
+    """Закрывает коннект с кафкой при остановке app"""
     await consumer.stop()
 
 
 "/api/get_all_data/2023-02-18T18:17:31.749Z&2023-02-18T18:17:31.749Z&1h"
 @app.get("/api/get_all_data/{start}{end}{interval}")
-def get_all_data(request: Request) -> dict[str, float]:
+def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[str, float]:
     """Тут отдаем исторические данные"""
     conn = psycopg2.connect(
         host='db',
@@ -69,13 +73,15 @@ def get_all_data(request: Request) -> dict[str, float]:
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
     step = int(interval) if interval.endswith("m") else int(interval) * 60
+    cur = conn.cursor()
     cur.execute(f"SELECT id from consumer_data where d_create::text like {start_date}")
     satrt_id = cur.fetchall()[0][0]
     cur.execute(f"SELECT id from consumer_data where d_create::text like {finish_date}")
     max_id = cur.fetchall()[0][0]
     ids = [range(satrt_id, max_id+1, step)]
     cur.execute(f"SELECT data from consumer_data where id in {ids}")
-
+    result = cur.fetchall()[0]
+    # TODO подключить парсер для фронта
     return {"request": 200}
 
 
@@ -84,3 +90,16 @@ def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     data = get_last_record_from_db()
     return map_exauster_data(data)
+@app.get("/api/aglomachines")
+async def websocket_endpoint(websocket: WebSocket) -> None:
+    """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
+    await websocket.accept()
+    while True:
+        try:
+            # Send message to the client
+            data = get_last_record_from_db()
+            resp = map_exauster_data(data)
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
