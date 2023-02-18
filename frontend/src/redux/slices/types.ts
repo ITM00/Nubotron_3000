@@ -1,5 +1,5 @@
 export interface Value {
-    value: number;
+    value: number | null;
     state: 'danger' | 'normal' | 'warning';
 }
 
@@ -50,7 +50,10 @@ export interface MasloBack {
     pressure: Value;
 }
 
-export interface Scheme {
+export interface IExhauster {
+    numberRoter: number | null; // номер ротора соответствует записи, внесенной в справочник роторов
+    dateChangeRoter: Date | null; // указывает дату замены ротора на конкретном эксгаустере;
+    lastChangeRoter: number | null; /// отображается суммарно время, которое установленный ротор был в работе
     bearing: IBearing;
     coolant: {
         after1: Value;
@@ -61,39 +64,34 @@ export interface Scheme {
     mainPrivod: {
         I: Value;
         IDvig: Value;
-        URoter: Value;
+        URotor: Value;
         UStater: Value;
     };
     masloBack: MasloBack;
     truba: {
-        level: Value;
-        vacuum: Value;
-        damper: number;
-        temperature: number;
+        vacuum: number | null;
+        damper: number | null;
+        temperature: number | null;
     };
-}
-
-export interface Exhauster {
-    id: string;
+    prognozRouter: {
+        days: number | null; // отображается прогнозное время работы до отказа, дополнительная индикация в виде значков
+        state: 'danger' | 'normal' | 'warning' | null;
+    };
     status: 'run' | 'stop';
-    numberRoter: number; // номер ротора соответствует записи, внесенной в справочник роторов
-    dateChangeRoter: Date; // указывает дату замены ротора на конкретном эксгаустере;
-    lastChangeRoter: number; /// отображается суммарно время, которое установленный ротор был в работе
-    prediction: {
-        days: number; // отображается прогнозное время работы до отказа, дополнительная индикация в виде значков
-        state: 'danger' | 'normal' | 'warning';
-    };
-    bearing: IBearing;
-    masloBack: MasloBack;
 }
 
-export interface Aglomachine {
-    name: string;
-    exhausts: Exhauster[];
+export interface IAglomachine {
+    [exhausterName: string]: IExhauster;
+}
+
+export interface IAglomachines {
+    [aglomachineseyName: string]: IAglomachine;
 }
 
 export interface State {
-    name?: string;
-    scheme?: Scheme;
-    aglomachines?: Aglomachine[];
+    name?: {
+        nameAglo: string;
+        nameExh: string;
+    };
+    aglomachines?: IAglomachines;
 }

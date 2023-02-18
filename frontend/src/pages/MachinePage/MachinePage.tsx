@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { DocsIcon } from '../../components/icons';
 import { PageHeaderLayout } from '../../components/layouts/PageHeaderLayout';
@@ -55,7 +56,7 @@ export function MachinePage() {
                         <div className={'rounded-lg bg-yellow-600 p-2 text-white'}>
                             <DocsIcon className={'h-4 w-4 fill-yellow-300'} />
                         </div>
-                        <div className={'text-sm font-medium'}>{`Эксгаустер ${current.name || '****'}`}</div>
+                        <div className={'text-sm font-medium'}>{`Эксгаустер ${current.name?.nameExh || '****'}`}</div>
                     </div>
                     {activeTab === 'graph' ? <Button theme={'gray'}>Сохранить в Excel</Button> : ''}
                 </PageHeaderLayout>
@@ -138,6 +139,39 @@ const aggregates = [
 function Graph() {
     const [timeValue, setTimeValue] = useState(possibleTime[0]);
 
+    const data = [
+        {
+            name: 'день 1',
+            first: 100,
+            second: 200,
+        },
+        {
+            name: 'день 2',
+            first: 200,
+            second: 300,
+        },
+        {
+            name: 'день 3',
+            first: 300,
+            second: 100,
+        },
+        {
+            name: 'день 4',
+            first: 400,
+            second: 500,
+        },
+        {
+            name: 'день 5',
+            first: 500,
+            second: 600,
+        },
+        {
+            name: 'день 6',
+            first: 600,
+            second: 100,
+        },
+    ];
+
     return (
         <div className={'flex h-full overflow-hidden p-2'}>
             <div className={'flex w-72 flex-col gap-1 border-r border-gray-100 px-1'}>
@@ -203,11 +237,30 @@ function Graph() {
                     })}
                 </div>
             </div>
-            <div className={'flex flex-1 flex-col px-1'}>
+            <div className={'flex max-w-[100%] flex-1 flex-col px-1'}>
                 <div className={'mb-2 flex items-center justify-end border-b-2 border-gray-60 pb-2'}>
                     <Select value={timeValue} items={possibleTime} onChange={setTimeValue} />
                 </div>
-                <div className={'h-full bg-red-1000'}></div>
+                <ResponsiveContainer width={5000} height='100%' className={'max-w-[100%] overflow-y-scroll'}>
+                    <LineChart width={5000} height={500} data={data}>
+                        <Line
+                            type='monotone'
+                            dataKey='first'
+                            strokeWidth={3}
+                            stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                        />
+                        <Line
+                            type='monotone'
+                            dataKey='second'
+                            strokeWidth={3}
+                            stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                        />
+                        <CartesianGrid strokeDasharray='3 3' />
+                        <XAxis dataKey='name' />
+                        <YAxis />
+                        <Tooltip content={<div>123</div>} />
+                    </LineChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );

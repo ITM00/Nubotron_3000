@@ -2,9 +2,10 @@ import './App.scss';
 
 import React, { StrictMode, Suspense, lazy } from 'react';
 import { Provider } from 'react-redux';
-import { Link, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { Loader } from '../components/ui';
+import { MainPage } from '../pages/MainPage';
 import { store } from '../redux/store';
 
 const PanelPage = lazy(() => import('../pages/PanelPage'));
@@ -14,11 +15,7 @@ const MachinePage = lazy(() => import('../pages/MachinePage'));
 const router = createBrowserRouter([
     {
         path: '/',
-        element: (
-            <div>
-                <Link to={'/panel/machine'}>/panel/machine</Link>
-            </div>
-        ),
+        element: <MainPage />,
     },
     {
         path: '/panel',

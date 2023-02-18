@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { Value } from '../../../redux/slices/current';
+import { Value } from '../../../redux/slices/types';
 
 interface MasloBakProps {
     process: Value;
@@ -33,7 +33,7 @@ export const MasloBak = ({ process, pressure }: MasloBakProps) => {
                         right: 0,
                         bottom: 0,
                         zIndex: 0,
-                        width: `${(pressure.value / 6) * 100}%`,
+                        width: `${((pressure.value || 0) / 6) * 100}%`,
                     }}
                 ></div>
                 <div
@@ -44,7 +44,7 @@ export const MasloBak = ({ process, pressure }: MasloBakProps) => {
                         left: 12,
                     }}
                 >
-                    <div className={'font-medium'}>{pressure.value}</div>
+                    <div className={'font-medium'}>{pressure.value ? Math.round(pressure.value) : '-'}</div>
                     <div>Давление масла, кг/см2</div>
                 </div>
             </div>
@@ -83,7 +83,7 @@ export const MasloBak = ({ process, pressure }: MasloBakProps) => {
                         right: 0,
                         bottom: 0,
                         zIndex: 0,
-                        width: `${process.value}%`,
+                        width: `${process.value || 0}%`,
                     }}
                 ></div>
                 <div
@@ -94,7 +94,7 @@ export const MasloBak = ({ process, pressure }: MasloBakProps) => {
                         left: 12,
                     }}
                 >
-                    <div className={'font-medium'}>{process.value}</div>
+                    <div className={'font-medium'}>{process.value ? Math.round(process.value) : '-'}</div>
                     <div>УРОВЕНЬ МАСЛА, %</div>
                 </div>
             </div>

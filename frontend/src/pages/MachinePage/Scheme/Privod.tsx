@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { Value } from '../../../redux/slices/current';
+import { Value } from '../../../redux/slices/types';
 
 interface PrivodProps {
     I: Value;
@@ -30,7 +30,7 @@ export function Privod(props: PrivodProps) {
                             props.I.state === 'normal' ? 'bg-gray_green-600' : '',
                         )}
                     >
-                        {props.I.value}
+                        {props.I.value ? Math.round(props.I.value) : '-'}
                     </div>
                 </div>
                 <div className={'flex w-full justify-between'}>
@@ -43,7 +43,7 @@ export function Privod(props: PrivodProps) {
                             props.IDvig.state === 'normal' ? 'bg-gray_green-600' : '',
                         )}
                     >
-                        {props.IDvig.value}
+                        {props.IDvig.value ? Math.round(props.IDvig.value) : '-'}
                     </div>
                 </div>
                 <div className={'flex w-full justify-between'}>
@@ -56,7 +56,7 @@ export function Privod(props: PrivodProps) {
                             props.URoter.state === 'normal' ? 'bg-gray_green-600' : '',
                         )}
                     >
-                        {props.URoter.value}
+                        {props.URoter.value ? Math.round(props.URoter.value) / 10 : '-'}
                     </div>
                 </div>
                 <div className={'flex w-full justify-between'}>
@@ -69,7 +69,7 @@ export function Privod(props: PrivodProps) {
                             props.UStater.state === 'normal' ? 'bg-gray_green-600' : '',
                         )}
                     >
-                        {props.UStater.value}
+                        {props.UStater.value ? Math.round(props.UStater.value) / 10 : '-'}
                     </div>
                 </div>
             </div>

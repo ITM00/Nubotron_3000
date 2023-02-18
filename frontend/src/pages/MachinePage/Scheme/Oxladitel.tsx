@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import { Value } from '../../../redux/slices/current';
+import { Value } from '../../../redux/slices/types';
 
 interface OxladitelProps {
     after1: Value;
@@ -41,7 +41,7 @@ const PopupGrad = (props: PopupProps) => {
                 left: props.left,
             }}
         >
-            {props.content.value} <span className={'font-light'}>°С</span>
+            {props.content.value ? Math.round(props.content.value) : '-'} <span className={'font-light'}>°С</span>
         </div>
     );
 };

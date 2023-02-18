@@ -16,12 +16,12 @@ interface BearingProps {
 }
 
 export interface RotorProps {
-    numberRoter: number;
-    dateChangeRoter: Date;
-    lastChangeRoter: number;
+    numberRoter: number | null;
+    dateChangeRoter: Date | null;
+    lastChangeRoter: number | null;
     prediction: {
-        state: 'normal' | 'warning' | 'danger';
-        days: number;
+        state: 'normal' | 'warning' | 'danger' | null;
+        days: number | null;
     };
     bearing: IBearing;
     masloBack: MasloBack;
@@ -213,8 +213,10 @@ export function Rotor(props: RotorProps) {
         <div className={'flex flex-col gap-2'}>
             <div className={'flex items-center justify-between'}>
                 <div className={'flex items-center gap-1'}>
-                    <div className={'text-black font-medium'}>{`Ротер №${props.numberRoter}`}</div>
-                    <div className={'rounded bg-gray-40 px-2 py-1 text-sm'}>{dateToString(props.dateChangeRoter)}</div>
+                    <div className={'text-black font-medium'}>{`Ротер №${props.numberRoter || '-'}`}</div>
+                    <div className={'rounded bg-gray-40 px-2 py-1 text-sm'}>
+                        {props.dateChangeRoter ? dateToString(props.dateChangeRoter) : '-'}
+                    </div>
                 </div>
             </div>
             <div className={'w-full border border-gray-60'} />
@@ -226,7 +228,7 @@ export function Rotor(props: RotorProps) {
                             'text-black flex items-center justify-center rounded-lg bg-gray-40 px-4 py-2 text-lg font-medium'
                         }
                     >
-                        {props.lastChangeRoter} Сут
+                        {props.lastChangeRoter || '-'} Сут
                     </div>
                     <div className={'flex flex-col'}>
                         <div className={'flex items-center gap-2'}>
@@ -240,7 +242,7 @@ export function Rotor(props: RotorProps) {
                                 )}
                             />
                         </div>
-                        <div className={'font-medium text-gray-800'}>{props.prediction.days} Сут</div>
+                        <div className={'font-medium text-gray-800'}>{props.prediction.days || '- '} Сут</div>
                     </div>
                 </div>
             </div>
