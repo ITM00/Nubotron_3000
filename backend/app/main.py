@@ -57,7 +57,7 @@ async def shutdown_event():
 
 "/api/get_all_data/2023-02-18T18:17:31.749Z&2023-02-18T18:17:31.749Z&1h"
 @app.get("/api/get_all_data/{start}{end}{interval}")
-def get_all_data(request: Request) -> dict[str, float]:
+def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[str, float]:
     """Тут отдаем исторические данные"""
     conn = psycopg2.connect(
         host='db',
@@ -75,7 +75,8 @@ def get_all_data(request: Request) -> dict[str, float]:
     max_id = cur.fetchall()[0][0]
     ids = [range(satrt_id, max_id+1, step)]
     cur.execute(f"SELECT data from consumer_data where id in {ids}")
-
+    result = cur.fetchall()[0]
+    # TODO подключить парсер для фронта
     return {"request": 200}
 
 
