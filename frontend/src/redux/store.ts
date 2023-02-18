@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { logger } from 'redux-logger';
 
-import { historySlice } from './slices/history';
+import { currentSlice } from './slices/current';
 import { notifySlice } from './slices/notify';
 
 export const rootReducer = combineReducers({
-    history: historySlice.reducer,
     notify: notifySlice.reducer,
+    current: currentSlice.reducer,
 });
 
 export const store = configureStore({

@@ -4,13 +4,9 @@ import { Header } from './Header';
 
 export function PanelPage() {
     return (
-        <div className={'max-w-screen max-h-screen'}>
+        <div className={'flex h-screen w-screen flex-col items-stretch'}>
             <Header />
-            <div className={'flex h-full p-4'}>
-                <div className={'w-full'}>
-                    <Outlet />
-                </div>
-            </div>
+            <Outlet />
         </div>
     );
 }

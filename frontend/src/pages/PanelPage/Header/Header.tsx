@@ -8,7 +8,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowDownIcon, InfoIcon, NotificationIcon } from '../../../components/icons';
 import { Button, Disclosure, Modal, dateToFullString } from '../../../components/ui';
 import { useOnClickOutside } from '../../../hooks';
-import { useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { currentSlice } from '../../../redux/slices/current';
 
 export const Header = memo(function Header() {
     return (

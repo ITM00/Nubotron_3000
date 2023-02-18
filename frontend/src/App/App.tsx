@@ -50,10 +50,10 @@ const router = createBrowserRouter([
 
 export const App = () => {
     return (
-        <StrictMode>
-            <Provider store={store}>
-                <RouterProvider router={router} />
-            </Provider>
-        </StrictMode>
+        // <StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
+        // </StrictMode>
     );
 };
