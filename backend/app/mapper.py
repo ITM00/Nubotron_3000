@@ -1251,13 +1251,15 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
 
     return exg_unit_kafka_data_map
 
-def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
+def map_exauster_data(data):
     """Получает json с данными кафки из бд и форматирует его для отправки по вебсокету"""
-    exg_unit_kafka_data_map = map_data_from_kafka(data)
+
+    exg_unit_kafka_data_map = map_data_from_kafka(data.get("data"))
     res = {
         "1": {},
         "2": {},
-        "3": {}
+        "3": {},
+        "moment": data.get("moment"),
     }
     aglo_exg_map = {
         "У-171": "1",
@@ -1336,7 +1338,6 @@ def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
 
             elif unit == "main_drive":
                 for drive_sensor_name, drive_sensor_val in sensors.items():
-                    # print(drive_sensor_name, drive_sensor_val)
                     if drive_sensor_name == "rotor_current":
                         d_name = "I"
                         if exgauster_name in {"exgauster_u171", "exgauster_u172"}:
@@ -1363,14 +1364,22 @@ def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
             elif unit == "oil_sys":
 
                 for oil_param, oil_val in sensors.items():
-                    maslo_name = "level" if oil_param == "oil_level" else "pressure"
-                    if oil_val and oil_val < 20 and oil_val >= 10:
-                        oil_state = "warnimg"
-                    if oil_val and oil_val < 10:
-                        oil_state = "danger"
+                    if oil_param == "oil_level":
+                        maslo_name = "level"
+                        if oil_val and oil_val < 20 and oil_val >= 10:
+                            oil_state = "warning"
+                        if oil_val and oil_val < 10:
+                            oil_state = "danger"
+                        else:
+                            oil_state = "normal"
                     else:
-                        oil_state = "normal"
-
+                        maslo_name = "pressure"
+                        if exgauster_name.startswith("У") and oil_val < 0.5:
+                            oil_state = "danger"
+                        elif oil_val < 0.2:
+                            oil_state = "danger"
+                        else:
+                            oil_state = "normal"
                     res[aglovec_num][exgauster_name]["masloBack"].update({maslo_name: {"value": oil_val, "state": oil_state}})
 
         res[aglovec_num][exgauster_name]["prognozRouter"] = {"days": None, "state": None}
