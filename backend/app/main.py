@@ -59,8 +59,8 @@ async def shutdown() -> None:
     await consumer.stop()
 
 
-"/api/get_all_data/2023-02-18T18:17:31.749Z&2023-02-18T18:17:31.749Z&1h"
-@app.get("/api/get_all_data/{start}{end}{interval}")
+"/api/get_all_data/2023-02-18T18:17:31.749Z/2023-02-18T18:17:31.749Z/1h"
+@app.get("/api/get_all_data/{start}/{end}/{interval}")
 def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[str, float]:
     """Тут отдаем исторические данные"""
     conn = psycopg2.connect(
@@ -70,22 +70,32 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
         user="postgres",
         password="postgres",
     )
+
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
     step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
+
     cur = conn.cursor()
-    cur.execute(f"SELECT id from consumer_data where d_create::text like {start_date}")
+    cur.execute(f"SELECT id from consumer_data where d_create::text like '{start_date}%'")
     satrt_id = cur.fetchall()[0][0]
-    cur.execute(f"SELECT id from consumer_data where d_create::text like {finish_date}")
+
+    cur.execute(f"SELECT id from consumer_data where d_create::text like '{finish_date}%'")
     max_id = cur.fetchall()[0][0]
-    ids = [range(satrt_id, max_id+1, step)]
-    cur.execute(f"SELECT data from consumer_data where id in {ids}")
-    result = cur.fetchall()[0]
-    # TODO подключить парсер для фронта
-    s = json.dumps(result, indent=4, sort_keys=True)
-    with open("sample.json", "w") as outfile:
-        outfile.write(s)
-    return {"request": 200}
+
+    ids = tuple([i for i in range(satrt_id, max_id+1, step)])
+    if len(ids) < 1500:
+        cur.execute(f"SELECT data from consumer_data where id in {ids}")
+        result = cur.fetchall()
+
+        to_front = []
+        for element in result:
+            to_front.append(map_exauster_data(element[0]))
+
+        json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
+    else:
+        json_to_front = 400
+
+    return {"request": json_to_front}
 
 
 @app.get("/api/get_current_data")
@@ -93,6 +103,8 @@ def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     data = get_last_record_from_db()
     return map_exauster_data(data)
+
+
 @app.get("/api/aglomachines")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
