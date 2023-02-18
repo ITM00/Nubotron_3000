@@ -78,11 +78,6 @@ export function Statuses() {
 
 export function Machines() {
     const aglomachines = useAppSelector((state) => state.current.aglomachines);
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getAglomachines());
-    }, []);
 
     return (
         <div className={'mt-4 grid grid-cols-3 gap-8'}>

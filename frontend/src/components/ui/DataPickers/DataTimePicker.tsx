@@ -218,7 +218,10 @@ export function DataTimePicker(props: DataTimePickerProps) {
                     leaveFrom='opacity-100'
                     leaveTo='opacity-0'
                 >
-                    <Card ref={calendarRef} className={'absolute top-[calc(100%+1rem)] w-max w-56 !bg-white shadow-md'}>
+                    <Card
+                        ref={calendarRef}
+                        className={'absolute top-[calc(100%+1rem)] z-50 w-max w-56 !bg-white shadow-md'}
+                    >
                         <div className={'relative flex items-center justify-between rounded bg-gray-20 p-2'}>
                             <ChooseYear current={currentDate} onSelect={onChangeYear} />
                             <ChooseMonth current={currentDate} onSelect={onChangeMonth} />

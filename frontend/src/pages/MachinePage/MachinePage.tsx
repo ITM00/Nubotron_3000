@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { DocsIcon } from '../../components/icons';
@@ -22,6 +23,7 @@ type MachineTabs = 'scheme' | 'graph';
 export function MachinePage() {
     const current = useAppSelector((state) => state.current);
     const [activeTab, setActiveTab] = useState<MachineTabs>('scheme');
+    const navigate = useNavigate();
 
     const onChangeTab = useCallback(
         (tab: MachineTabs) => () => {
@@ -29,6 +31,12 @@ export function MachinePage() {
         },
         [],
     );
+
+    useEffect(() => {
+        if (!current.name) {
+            navigate('/panel/machine');
+        }
+    }, [current]);
 
     return (
         <div className={'m-4 flex  h-full flex-col gap-2 overflow-hidden'}>
@@ -174,7 +182,7 @@ function Graph() {
 
     return (
         <div className={'flex h-full overflow-hidden p-2'}>
-            <div className={'flex w-72 flex-col gap-1 border-r border-gray-100 px-1'}>
+            <div className={'flex w-72 min-w-[300px] flex-col gap-1 border-r border-gray-100 px-1'}>
                 <div className={'grid grid-cols-[1.5rem_1fr_70px] gap-x-1'}>
                     <div className={'border-b-2 border-gray-80'}>
                         <DisclosureButton isActive={false} />
@@ -187,7 +195,6 @@ function Graph() {
                         return (
                             <Disclosure
                                 key={aggregate.id}
-                                initOpen
                                 classNameTitle={'bg-gray-20 border border-gray-60 rounded w-full text-sm py-1 px-2'}
                                 classNameBody={'flex flex-col gap-2 text-sm'}
                                 title={aggregate.title}
@@ -196,7 +203,6 @@ function Graph() {
                                     return (
                                         <Disclosure
                                             key={type.id}
-                                            initOpen
                                             classNameTitle={
                                                 'bg-gray-20 border border-gray-60 rounded w-full text-sm py-1 px-2'
                                             }
