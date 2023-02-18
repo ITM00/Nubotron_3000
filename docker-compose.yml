@@ -27,6 +27,8 @@ services:
       - ./db/backup:/backup
     ports:
       - "5444:5432"
+    networks:
+      - net
 
   backend:
     container_name: backend
@@ -42,7 +44,7 @@ services:
       - db
     networks:
       - net
-    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --reload && bash -c python app/pull_history.py
 
   frontend:
     container_name: frontend
