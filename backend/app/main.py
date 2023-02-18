@@ -62,7 +62,7 @@ async def shutdown() -> None:
 
 "/api/get_all_data/2023-02-18T18:17:31.749Z/2023-02-18T18:17:31.749Z/1h"
 @app.get("/api/get_all_data/{start}/{end}/{interval}")
-def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[str, float]:
+def get_all_data(start: str, end: str, interval: str, request: Request):
     """Тут отдаем исторические данные"""
     conn = psycopg2.connect(
         host='db',
@@ -90,7 +90,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
 
         to_front = []
         for element in result:
-            to_front.append(map_exauster_data(element[0])["У-171"])
+            to_front.append(map_exauster_data(element[0])['1']['У-171'])
 
         json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
     else:
