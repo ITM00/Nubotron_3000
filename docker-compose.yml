@@ -44,7 +44,7 @@ services:
       - db
     networks:
       - net
-    command: uvicorn app.main:app --host 0.0.0.0 --reload && bash -c python app/pull_history.py
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
 
   frontend:
     container_name: frontend
