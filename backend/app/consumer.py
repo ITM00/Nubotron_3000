@@ -17,30 +17,6 @@ consumer1 = KafkaConsumer(
     ssl_cafile="CA.crt",
 )
 
-consumer2 = KafkaConsumer(
-    bootstrap_servers='rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091',
-    security_protocol="SASL_SSL",
-    sasl_mechanism="SCRAM-SHA-512",
-    sasl_plain_username='9433_reader',
-    sasl_plain_password='eUIpgWu0PWTJaTrjhjQD3.hoyhntiK',
-    ssl_cafile="CA.crt",
-)
-
-def add_data_in_db_for_month(json):
-    conn = psycopg2.connect(
-        host='localhost',
-        port=5444,
-        database="postgres",
-        user="postgres",
-        password="postgres",
-    )
-
-    cur = conn.cursor()
-    cur.execute("INSERT INTO consumer_data_month (d_create, json) VALUES(current_timestamp, (%s))", (json,))
-
-    conn.commit()
-    conn.close()
-    cur.close()
 
 def add_data_in_db(json):
     conn = psycopg2.connect(
@@ -69,6 +45,32 @@ for msg in consumer1:
     add_data_in_db(s)
 
 # Что бы извлечь данные за месяц
+
+# consumer2 = KafkaConsumer(
+#     bootstrap_servers='rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091',
+#     security_protocol="SASL_SSL",
+#     sasl_mechanism="SCRAM-SHA-512",
+#     sasl_plain_username='9433_reader',
+#     sasl_plain_password='eUIpgWu0PWTJaTrjhjQD3.hoyhntiK',
+#     ssl_cafile="CA.crt",
+# )
+
+# def add_data_in_db_for_month(json):
+#     conn = psycopg2.connect(
+#         host='localhost',
+#         port=5444,
+#         database="postgres",
+#         user="postgres",
+#         password="postgres",
+#     )
+
+#     cur = conn.cursor()
+#     cur.execute("INSERT INTO consumer_data_month (d_create, json) VALUES(current_timestamp, (%s))", (json,))
+
+#     conn.commit()
+#     conn.close()
+#     cur.close()
+
 # month_ago = (datetime.now() - relativedelta(months=1)).timestamp()
 # topic_partition = TopicPartition(topic, 0)
 # assigned_topic = [topic_partition]
