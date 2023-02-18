@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Label, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { DocsIcon } from '../../components/icons';
 import { PageHeaderLayout } from '../../components/layouts/PageHeaderLayout';
@@ -149,32 +149,32 @@ function Graph() {
 
     const data = [
         {
-            name: 'день 1',
+            name: new Date(1, 1, 1).toString(),
             first: 100,
             second: 200,
         },
         {
-            name: 'день 2',
+            name: new Date(2, 1, 1).toString(),
             first: 200,
             second: 300,
         },
         {
-            name: 'день 3',
+            name: new Date(3, 1, 1).toString(),
             first: 300,
             second: 100,
         },
         {
-            name: 'день 4',
+            name: new Date(4, 1, 1).toString(),
             first: 400,
             second: 500,
         },
         {
-            name: 'день 5',
+            name: new Date(5, 1, 1).toString(),
             first: 500,
             second: 600,
         },
         {
-            name: 'день 6',
+            name: new Date(6, 1, 1).toString(),
             first: 600,
             second: 100,
         },
@@ -247,7 +247,7 @@ function Graph() {
                 <div className={'mb-2 flex items-center justify-end border-b-2 border-gray-60 pb-2'}>
                     <Select value={timeValue} items={possibleTime} onChange={setTimeValue} />
                 </div>
-                <ResponsiveContainer width={5000} height='100%' className={'max-w-[100%] overflow-y-scroll'}>
+                <ResponsiveContainer width={5000} height='100%' className={'scrollbar max-w-[100%] overflow-y-scroll'}>
                     <LineChart width={5000} height={500} data={data}>
                         <Line
                             type='monotone'
@@ -262,12 +262,26 @@ function Graph() {
                             stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
                         />
                         <CartesianGrid strokeDasharray='3 3' />
-                        <XAxis dataKey='name' />
+                        <XAxis tick={renderCustomAxisTick} axisLine={{ stroke: '#9B9B9C' }} dataKey='name' />
                         <YAxis />
-                        <Tooltip content={<div>123</div>} />
+                        <Tooltip />
                     </LineChart>
                 </ResponsiveContainer>
             </div>
         </div>
+    );
+}
+
+function renderCustomAxisTick({ x, y, payload }: any) {
+    const date = new Date(payload.value);
+    return (
+        <>
+            <text fill={'#CCCCCC'} x={x} y={y + 10}>
+                {date.getFullYear()}
+            </text>
+            <text fill={'#6E6E6D'} x={x} y={y + 25}>
+                {date.getHours()}:{date.getMinutes()}
+            </text>
+        </>
     );
 }

@@ -10,7 +10,7 @@ export const getAglomachines = () => async (dispatch: AppDispatch) => {
 
     const loc: Location = window.location;
 
-    socketAglomachines = new WebSocket(`wss://${loc.host}/api/aglomachines`);
+    socketAglomachines = new WebSocket(`ws://${loc.host}/api/aglomachines`);
     socketAglomachines.onmessage = (e) => {
         dispatch(currentSlice.actions.SET_AGLO(JSON.parse(e.data)));
     };
