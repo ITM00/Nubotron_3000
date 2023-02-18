@@ -31,3 +31,5 @@ watchfiles==0.18.1
 websockets==10.4
 aiokafka[snappy]
 black
+pandas
+joblib

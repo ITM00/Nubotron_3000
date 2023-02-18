@@ -90,7 +90,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
 
         to_front = []
         for element in result:
-            to_front.append(map_exauster_data(element[0]))
+            to_front.append(map_exauster_data(element[0])["У-171"])
 
         json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
     else:
