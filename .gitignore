@@ -7,3 +7,4 @@ data.txt
 node_modules
 .idea
 yarn-error.log
+env/
