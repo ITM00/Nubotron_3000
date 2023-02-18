@@ -85,12 +85,15 @@ def get_all_data(start: str, end: str, interval: str, request: Request):
 
     ids = tuple([i for i in range(satrt_id, max_id+1, step)])
     if len(ids) < 1500:
-        cur.execute(f"SELECT data from consumer_data where id in {ids}")
+        cur.execute(f"SELECT d_create, data from consumer_data where id in {ids}")
         result = cur.fetchall()
 
         to_front = []
         for element in result:
-            to_front.append(map_exauster_data(element[0])['1']['У-171'])
+            mapped = map_exauster_data({"moment": element[0], "data":element[1]})
+            second_part = mapped['1']['У-171']
+            second_part['moment'] = mapped['moment']
+            to_front.append(second_part)
 
         json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
     else:
