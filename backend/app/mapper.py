@@ -1251,13 +1251,15 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
 
     return exg_unit_kafka_data_map
 
-def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
+def map_exauster_data(data):
     """Получает json с данными кафки из бд и форматирует его для отправки по вебсокету"""
-    exg_unit_kafka_data_map = map_data_from_kafka(data)
+
+    exg_unit_kafka_data_map = map_data_from_kafka(data.get("data"))
     res = {
         "1": {},
         "2": {},
-        "3": {}
+        "3": {},
+        "moment": data.get("moment"),
     }
     aglo_exg_map = {
         "У-171": "1",
@@ -1336,7 +1338,6 @@ def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
 
             elif unit == "main_drive":
                 for drive_sensor_name, drive_sensor_val in sensors.items():
-                    print(drive_sensor_name, drive_sensor_val)
                     if drive_sensor_name == "rotor_current":
                         d_name = "I"
                         if exgauster_name in {"exgauster_u171", "exgauster_u172"}:
