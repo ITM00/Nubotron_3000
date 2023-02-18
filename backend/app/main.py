@@ -1,14 +1,11 @@
 
 from fastapi import FastAPI, Request, WebSocket
-from fastapi.templating import Jinja2Templates
-from kafka import KafkaConsumer, TopicPartition
 import json
 import psycopg2
 import asyncio
-from pydantic import BaseModel, StrictStr
-from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
+from aiokafka import AIOKafkaConsumer
 from aiokafka.helpers import create_ssl_context
-from .consumer import add_data_in_db, conn
+from .consumer import add_data_in_db
 
 
 app = FastAPI()
