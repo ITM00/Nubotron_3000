@@ -25,7 +25,7 @@ def get_last_record_from_db() -> dict:
         password="postgres",
     )
     cur = conn.cursor()
-    cur.execute("SELECT json FROM consumer_data ORDER BY consumer_data.id DESC LIMIT 1")
+    cur.execute("SELECT data FROM consumer_data ORDER BY consumer_data.id DESC LIMIT 1")
     data = cur.fetchall()
     conn.close()
     cur.close()
