@@ -25,9 +25,15 @@ def get_last_record_from_db() -> dict:
         password="postgres",
     )
     cur = conn.cursor()
-    cur.execute("SELECT data FROM consumer_data ORDER BY consumer_data.id DESC LIMIT 1")
+    cur.execute("SELECT d_create, data FROM consumer_data ORDER BY consumer_data.id DESC LIMIT 1")
     data = cur.fetchall()
     conn.close()
     cur.close()
 
-    return data[0][0] if data and data[0] and data[0][0] else {}
+    res = {}
+    for element in data:
+        res = {
+            "moment": element[0],
+            "data": element[1]
+        }
+    return res
