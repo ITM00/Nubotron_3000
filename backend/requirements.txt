@@ -11,8 +11,8 @@ Jinja2==3.1.2
 kafka-python==2.0.2
 lz4==4.3.2
 MarkupSafe==2.1.2
-psycopg2==2.9.5
 psycopg2-binary==2.9.5
+psycopg2==2.9.5
 pydantic==1.10.5
 python-dateutil==2.8.2
 python-dotenv==0.21.1
@@ -29,4 +29,4 @@ uvicorn==0.20.0
 uvloop==0.17.0
 watchfiles==0.18.1
 websockets==10.4
-python-snappy
+aiokafka[snappy]

@@ -1,5 +1,5 @@
-db/
-dd/
+db/backup
+db/data
 __pycache__/
 venv/
 CA.crt
@@ -8,3 +8,4 @@ node_modules
 .idea
 yarn-error.log
 build
+env/
