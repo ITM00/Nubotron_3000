@@ -1,13 +1,11 @@
 from fastapi import FastAPI, Request, WebSocket
-from fastapi.templating import Jinja2Templates
-from kafka import KafkaConsumer, TopicPartition
 import json
 import psycopg2
 import asyncio
-from pydantic import BaseModel, StrictStr
-from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
+from aiokafka import AIOKafkaConsumer
 from aiokafka.helpers import create_ssl_context
-from .consumer import add_data_in_db
+from .consumer import add_data_in_db, get_last_record_from_db
+from .mapper import map_exauster_data
 from .pull_history import pull_history
 
 
@@ -84,16 +82,5 @@ def get_all_data(request: Request) -> dict[str, float]:
 @app.get("/api/get_current_data")
 def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
-    conn = psycopg2.connect(
-        host='db',
-        port=5432,
-        database="postgres",
-        user="postgres",
-        password="postgres",
-    )
-    cur = conn.cursor()
-    cur.execute("SELECT id, json FROM consumer_data ORDER BY consumer_data.id DESC LIMIT 1")
-    data = cur.fetchall()
-    conn.close()
-    cur.close()
-    return {"data": data}
+    data = get_last_record_from_db()
+    return map_exauster_data(data)
