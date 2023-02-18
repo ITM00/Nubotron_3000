@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request, WebSocket
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from .connection_manager import ConnectionManager
 import json
 import asyncio
 import psycopg2
@@ -10,7 +11,7 @@ from .pull_history import pull_history
 
 
 app = FastAPI()
-
+manager = ConnectionManager()
 
 topic = 'zsmk-9433-dev-01'
 loop = asyncio.get_event_loop()
@@ -72,7 +73,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
     )
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
-    step = int(interval) if interval.endswith("m") else int(interval) * 60
+    step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
     cur = conn.cursor()
     cur.execute(f"SELECT id from consumer_data where d_create::text like {start_date}")
     satrt_id = cur.fetchall()[0][0]
@@ -82,6 +83,9 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
     cur.execute(f"SELECT data from consumer_data where id in {ids}")
     result = cur.fetchall()[0]
     # TODO подключить парсер для фронта
+    s = json.dumps(result, indent=4, sort_keys=True)
+    with open("sample.json", "w") as outfile:
+        outfile.write(s)
     return {"request": 200}
 
 
@@ -90,16 +94,20 @@ def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     data = get_last_record_from_db()
     return map_exauster_data(data)
-@app.get("/api/aglomachines")
+
+
+@app.websocket("/api/aglomachines")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
-    await websocket.accept()
-    while True:
-        try:
-            # Send message to the client
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
             data = get_last_record_from_db()
             resp = map_exauster_data(data)
-            await websocket.send_json(resp)
-        except Exception as e:
-            print('error:', e)
-            break
+            await manager.broadcast(resp)
+    except WebSocketDisconnect:
+        data = get_last_record_from_db()
+        resp = map_exauster_data(data)
+        manager.disconnect(websocket)
+        await manager.broadcast(resp)
