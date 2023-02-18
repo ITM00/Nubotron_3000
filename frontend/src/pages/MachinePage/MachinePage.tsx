@@ -66,7 +66,6 @@ export function MachinePage() {
                         </div>
                         <div className={'text-sm font-medium'}>{`Эксгаустер ${current.name?.nameExh || '****'}`}</div>
                     </div>
-                    {activeTab === 'graph' ? <Button theme={'gray'}>Сохранить в Excel</Button> : ''}
                 </PageHeaderLayout>
                 {activeTab === 'graph' ? <Graph /> : <Scheme />}
             </Card>

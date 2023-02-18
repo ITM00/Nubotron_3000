@@ -11,10 +11,25 @@ export const getAglomachines = () => async (dispatch: AppDispatch) => {
     const loc: Location = window.location;
 
     socketAglomachines = new WebSocket(`ws://${loc.host}/api/aglomachines`);
+
+    let interval: NodeJS.Timer;
+    socketAglomachines.onopen = () => {
+        socketAglomachines?.send('');
+
+        interval = setInterval(() => {
+            if (!socketAglomachines) {
+                clearInterval(interval);
+                return;
+            }
+            socketAglomachines?.send('');
+        }, 60000);
+    };
+
     socketAglomachines.onmessage = (e) => {
         dispatch(currentSlice.actions.SET_AGLO(JSON.parse(e.data)));
     };
     socketAglomachines.onclose = () => {
+        clearInterval(interval);
         socketAglomachines = null;
     };
 };
