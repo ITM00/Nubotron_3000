@@ -93,7 +93,9 @@ def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     data = get_last_record_from_db()
     return map_exauster_data(data)
-@app.get("/api/aglomachines")
+
+
+@app.websocket("/api/aglomachines")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
     await websocket.accept()
