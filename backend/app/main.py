@@ -1,15 +1,16 @@
 from fastapi import FastAPI, Request, WebSocket
 import json
-import psycopg2
 import asyncio
+import psycopg2
 from aiokafka import AIOKafkaConsumer
 from aiokafka.helpers import create_ssl_context
-from .consumer import add_data_in_db, get_last_record_from_db
+from .db_interactions import add_data_in_db, get_last_record_from_db
 from .mapper import map_exauster_data
 from .pull_history import pull_history
 
 
 app = FastAPI()
+
 
 topic = 'zsmk-9433-dev-01'
 loop = asyncio.get_event_loop()
@@ -30,7 +31,8 @@ consumer = AIOKafkaConsumer(
 )
 
 
-async def consume():
+async def consume() -> None:
+    """Читает последнее сообщение из кафки и записывает его в бд"""
     await consumer.start()
     try:
         async for msg in consumer:
@@ -45,13 +47,15 @@ async def consume():
 
 
 @app.on_event("startup")
-async def startup_event():
+async def startup() -> None:
+    """Ставит задачу на пожирание сообщений из кафки при запуске app"""
     await pull_history(topic)
     loop.create_task(consume())
 
 
 @app.on_event("shutdown")
-async def shutdown_event():
+async def shutdown() -> None:
+    """Закрывает коннект с кафкой при остановке app"""
     await consumer.stop()
 
 
@@ -86,3 +90,16 @@ def get_current_data():
     """Тут получаем актуальный последний из кафки и отдаем на фронт"""
     data = get_last_record_from_db()
     return map_exauster_data(data)
+@app.get("/api/aglomachines")
+async def websocket_endpoint(websocket: WebSocket) -> None:
+    """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
+    await websocket.accept()
+    while True:
+        try:
+            # Send message to the client
+            data = get_last_record_from_db()
+            resp = map_exauster_data(data)
+            await websocket.send_json(resp)
+        except Exception as e:
+            print('error:', e)
+            break
