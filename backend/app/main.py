@@ -72,7 +72,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
     )
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
-    step = int(interval) if interval.endswith("m") else int(interval) * 60
+    step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
     cur = conn.cursor()
     cur.execute(f"SELECT id from consumer_data where d_create::text like {start_date}")
     satrt_id = cur.fetchall()[0][0]
@@ -82,6 +82,9 @@ def get_all_data(start: str, end: str, interval: str, request: Request) -> dict[
     cur.execute(f"SELECT data from consumer_data where id in {ids}")
     result = cur.fetchall()[0]
     # TODO подключить парсер для фронта
+    s = json.dumps(result, indent=4, sort_keys=True)
+    with open("sample.json", "w") as outfile:
+        outfile.write(s)
     return {"request": 200}
 
 
