@@ -1,6 +1,6 @@
 import psycopg2
 
-def add_data_in_db(json) -> None:
+def add_data_in_db(date_time,json) -> None:
     conn = psycopg2.connect(
             host='db',
             port=5432,
@@ -9,7 +9,7 @@ def add_data_in_db(json) -> None:
             password="postgres",
     )
     cur = conn.cursor()
-    cur.execute("INSERT INTO consumer_data (d_create, json) VALUES(current_timestamp, (%s))", (json,))
+    cur.execute(f"INSERT INTO consumer_data (d_create, data) VALUES('{date_time}', '{json}')",)
 
     conn.commit()
     conn.close()
