@@ -1336,7 +1336,7 @@ def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
 
             elif unit == "main_drive":
                 for drive_sensor_name, drive_sensor_val in sensors.items():
-                    print(drive_sensor_name, drive_sensor_val)
+                    # print(drive_sensor_name, drive_sensor_val)
                     if drive_sensor_name == "rotor_current":
                         d_name = "I"
                         if exgauster_name in {"exgauster_u171", "exgauster_u172"}:
