@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request, WebSocket
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from .connection_manager import ConnectionManager
 import json
 import asyncio
 import psycopg2
@@ -10,7 +11,7 @@ from .pull_history import pull_history
 
 
 app = FastAPI()
-
+manager = ConnectionManager()
 
 topic = 'zsmk-9433-dev-01'
 loop = asyncio.get_event_loop()
@@ -105,16 +106,18 @@ def get_current_data():
     return map_exauster_data(data)
 
 
-@app.get("/api/aglomachines")
+@app.websocket("/api/aglomachines")
 async def websocket_endpoint(websocket: WebSocket) -> None:
     """Принимает хук от фронта и отдает ему жсон с последними данными из кафки"""
-    await websocket.accept()
-    while True:
-        try:
-            # Send message to the client
+    await manager.connect(websocket)
+    try:
+        while True:
+            await websocket.receive_text()
             data = get_last_record_from_db()
             resp = map_exauster_data(data)
-            await websocket.send_json(resp)
-        except Exception as e:
-            print('error:', e)
-            break
+            await manager.broadcast(resp)
+    except WebSocketDisconnect:
+        data = get_last_record_from_db()
+        resp = map_exauster_data(data)
+        manager.disconnect(websocket)
+        await manager.broadcast(resp)
