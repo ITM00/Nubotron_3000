@@ -1,7 +1,11 @@
 
-def map_data_from_kafka(data: dict):
+from typing import Any, Union
+
+
+def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict[str, dict[str, str]]]], str]]:
+    """Получает json с данными кафки из бд и приводит его к читаемому состоянию"""
     exg_unit_kafka_data_map = {
-        "Эксгаустер У-171": {
+        "У-171": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -208,7 +212,7 @@ def map_data_from_kafka(data: dict):
             },
             "exgauster_status": data.get("SM_Exgauster\\[2.0]")
         },
-        "Эксгаустер У-172": {
+        "У-172": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -415,7 +419,7 @@ def map_data_from_kafka(data: dict):
             },
             "exgauster_status": data.get("SM_Exgauster\\[2.1]")
         },
-        "Эксгаустер Ф-171": {
+        "Ф-171": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -622,7 +626,7 @@ def map_data_from_kafka(data: dict):
             },
             "exgauster_status": data.get("SM_Exgauster\\[0.0]")
         },
-        "Эксгаустер Ф-172": {
+        "Ф-172": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -829,7 +833,7 @@ def map_data_from_kafka(data: dict):
             },
             "exgauster_status": data.get("SM_Exgauster\\[0.1]")
         },
-        "Эксгаустер Х-171": {
+        "Х-171": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -1036,7 +1040,7 @@ def map_data_from_kafka(data: dict):
             },
             "exgauster_status": data.get("SM_Exgauster\\[3.0]")
         },
-        "Эксгаустер Х-172": {
+        "Х-172": {
             "podshipnics":{
                 "podshipnik_1": {
                     "tempreture": {
@@ -1247,20 +1251,21 @@ def map_data_from_kafka(data: dict):
 
     return exg_unit_kafka_data_map
 
-def map_exauster_data(data):
+def map_exauster_data(data) -> dict[str, dict[str, dict[str, dict[str, Any]]]]:
+    """Получает json с данными кафки из бд и форматирует его для отправки по вебсокету"""
     exg_unit_kafka_data_map = map_data_from_kafka(data)
     res = {
-        "Алгомашина 1": {},
-        "Алгомашина 2": {},
-        "Алгомашина 3": {}
+        "1": {},
+        "2": {},
+        "3": {}
     }
     aglo_exg_map = {
-        "Эксгаустер У-171": "Алгомашина 1",
-        "Эксгаустер У-172": "Алгомашина 1",
-        "Эксгаустер Ф-171": "Алгомашина 2",
-        "Эксгаустер Ф-172": "Алгомашина 2",
-        "Эксгаустер Х-171": "Алгомашина 3",
-        "Эксгаустер Х-172": "Алгомашина 3",
+        "У-171": "1",
+        "У-172": "1",
+        "Ф-171": "2",
+        "Ф-172": "2",
+        "Х-171": "3",
+        "Х-172": "3",
     }
     for exgauster_name, aglovec_num in aglo_exg_map.items():
         res[aglovec_num].update({
