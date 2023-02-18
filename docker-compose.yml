@@ -27,6 +27,8 @@ services:
       - ./db/backup:/backup
     ports:
       - "5444:5432"
+    networks:
+      - net
 
   backend:
     container_name: backend
