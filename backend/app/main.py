@@ -74,8 +74,8 @@ def get_all_data(start: str, end: str, interval: str, request: Request):
     )
     json_to_front = 400
     start_id = m_id = None
-    start_date = start.replace("T", " ")[:16]
-    finish_date = end.replace("T", " ")[:16]
+    start_date = start.replace("T", " ")[:16]   # strptime
+    finish_date = end.replace("T", " ")[:16]    # strptime
     step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
 
     cur = conn.cursor()

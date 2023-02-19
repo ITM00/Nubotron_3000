@@ -1,11 +1,49 @@
-from datetime import datetime
-from typing import Any, Union
+from typing import Union, Any
 
 
 def map_data_from_kafka(
     data: dict,
-) -> dict[str, Union[dict[str, Union[str, dict[str, dict[str, str]]]], str]]:
-    """Получает json с данными кафки из бд и приводит его к читаемому состоянию"""
+) -> dict[str, Union[dict[str, Any], float]]:
+    """
+    Получает json с данными кафки из бд и приводит его к читаемому состоянию
+
+
+    exg_unit_kafka_data_map = {
+        эксгаустер = {
+            подшипники: {
+                подшипник: {
+                    Температура:{
+                        датчик: значение
+                    }
+                }
+            }
+            охлаждающая установка: {
+                масло: {
+                        датчик: значение
+                }
+                вода: {
+                        датчик: значение
+                }
+            }
+            коллектор: {
+                датчик: значение
+            }
+            заслонка: {
+                датчик: значение
+            }
+            привод: {
+                датчик: значение
+            }
+            масляная система: {
+                датчик: значение
+            }
+            статус эксгаустера: {
+                датчик: значение
+            }
+        }
+    }
+
+    """
     exg_unit_kafka_data_map = {
         "У-171": {
             "podshipnics": {
@@ -1254,8 +1292,51 @@ def map_data_from_kafka(
     return exg_unit_kafka_data_map
 
 
-def map_exauster_data(data):
-    """Получает json с данными кафки из бд и форматирует его для отправки по вебсокету"""
+def map_exauster_data(data) -> dict[str, Any]:
+    """
+    Получает json с данными кафки из бд и форматирует его для отправки по вебсокету
+
+    res = {
+        Алгомашина: {
+            Эксгаустер: {
+                подшипники: {
+                    подшипник: {
+                        параметр: {
+                            value: значение параметра
+                            state: статус(normal | warning | danger)
+                        }
+                    }
+                }
+                охлаждающая установка: {
+                    параметр: {
+                        value: значение параметра
+                        state: статус(normal | warning | danger)
+                    }
+                }
+                привод: {
+                    параметр: {
+                        value: значение параметра
+                        state: статус(normal | warning | danger)
+                    }
+                }
+                масляная система: {
+                    параметр: {
+                        value: значение параметра
+                        state: статус(normal | warning | danger)
+                    }
+                }
+                коллектор и заслонка коллектора: {
+                    параметр: {
+                        value: значение параметра
+                        state: статус(normal | warning | danger)
+                    }
+                }
+            }
+        }
+        дата получения сообщения: iso формат
+    }
+
+    """
 
     exg_unit_kafka_data_map = map_data_from_kafka(data.get("data"))
     res = {
