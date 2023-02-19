@@ -97,7 +97,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request):
             for element in result:
                 mapped = map_exauster_data({"moment": element[0], "data":element[1]})
                 second_part = mapped['1']['У-171']
-                second_part['moment'] = mapped['moment'].isoformat()
+                second_part['moment'] = mapped['moment']
                 to_front.append(second_part)
 
             json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
