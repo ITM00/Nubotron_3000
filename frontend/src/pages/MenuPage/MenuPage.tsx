@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRightIcon, DocsIcon, RadioIcon, ThermometerIcon, WaterIcon } from '../../components/icons';
 import { PageHeaderLayout } from '../../components/layouts';
 import { Button, Card } from '../../components/ui';
-import { getAglomachines } from '../../redux/actions/current';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { currentSlice } from '../../redux/slices/current';
 import { IAglomachine, IAglomachines, IExhauster } from '../../redux/slices/types';
@@ -13,6 +12,8 @@ import { Rotor } from './Rotor';
 
 export function MenuPage() {
     const aglomachines = useAppSelector((state) => state.current.aglomachines);
+
+    const diff = aglomachines?.moment ? new Date((new Date() as any) - (new Date(aglomachines.moment) as any)) : null;
 
     return (
         <Card className={'scrollbar m-4 h-full overflow-y-auto'}>
@@ -23,15 +24,7 @@ export function MenuPage() {
                     </div>
                     <div className={'text-sm font-medium'}>Главный экран</div>
                 </div>
-                <div>
-                    <Timer
-                        diff={
-                            aglomachines?.moment
-                                ? new Date((new Date() as any) - (new Date(aglomachines.moment) as any))
-                                : null
-                        }
-                    />
-                </div>
+                <Timer diff={diff} />
             </PageHeaderLayout>
             <div className={'p-2'}>
                 <Statuses />
@@ -47,6 +40,10 @@ interface TimerProps {
 
 function Timer(props: TimerProps) {
     const [diff, setDiff] = useState(props.diff);
+
+    useEffect(() => {
+        setDiff(props.diff);
+    }, [props.diff]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -72,12 +69,14 @@ function Timer(props: TimerProps) {
         };
     }, []);
 
+    if (!diff) {
+        return <div></div>;
+    }
+
     return (
-        diff && (
-            <div
-                className={'mt-2 text-xs font-light text-gray-900'}
-            >{`Информация была актуальна ${diff.getMinutes()}м. ${diff.getSeconds()}с. назад`}</div>
-        )
+        <div
+            className={'mt-2 text-xs font-light text-gray-900'}
+        >{`Информация была актуальна ${diff.getMinutes()}м. ${diff.getSeconds()}с. назад`}</div>
     );
 }
 

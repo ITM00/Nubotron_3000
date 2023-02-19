@@ -22,7 +22,7 @@ export const getAglomachines = () => async (dispatch: AppDispatch) => {
                 return;
             }
             socketAglomachines?.send('');
-        }, 60000);
+        }, 10000);
     };
 
     socketAglomachines.onmessage = (e) => {

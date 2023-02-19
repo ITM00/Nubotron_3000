@@ -215,23 +215,6 @@ function Profile() {
                 </Button>
                 <ArrowDownIcon className={'fill-black h-6 w-6'} />
             </div>
-            {isActive && (
-                <div
-                    className={
-                        'ring-black absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-opacity-5 focus:outline-none'
-                    }
-                >
-                    <div className={'cursor-pointer p-4 hover:bg-gray-100'} onClick={clickHandle}>
-                        some items
-                    </div>
-                    <div className={'cursor-pointer p-4 hover:bg-gray-100'} onClick={clickHandle}>
-                        some items
-                    </div>
-                    <div className={'cursor-pointer p-4 hover:bg-gray-100'} onClick={clickHandle}>
-                        some items
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
