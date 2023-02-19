@@ -32,24 +32,6 @@ consumer = AIOKafkaConsumer(
 )
 
 
-class NextFailDate(BaseModel):
-    """
-    Input features validation for the ML model
-    """
-    hor_vibr_7: float
-    ver_vibr_7: float
-    hor_vibr_8: float
-    ver_vibr_8: float
-    av_hor_vibr_7: float
-    av_ver_vibr_7: float
-    av_hor_vibr_8: float
-    av_ver_vibr_8: float
-    sd_hor_vibr_7: float
-    sd_ver_vibr_7: float
-    sd_hor_vibr_8: float
-    sd_ver_vibr_8: float
-
-
 async def consume() -> None:
     """Читает последнее сообщение из кафки и записывает его в бд"""
     await consumer.start()
