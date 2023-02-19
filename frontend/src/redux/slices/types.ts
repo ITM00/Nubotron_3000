@@ -78,16 +78,17 @@ export interface IExhauster {
         state: 'danger' | 'normal' | 'warning' | null;
     };
     status: 'run' | 'stop';
-    moment: string | null;
 }
 
 export interface IAglomachine {
     [exhausterName: string]: IExhauster;
 }
 
-export interface IAglomachines {
+export type IAglomachines = {
     [aglomachineseyName: string]: IAglomachine;
-}
+} & {
+    moment: string | null;
+};
 
 export interface State {
     name?: {

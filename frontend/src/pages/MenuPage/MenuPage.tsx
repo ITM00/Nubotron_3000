@@ -8,23 +8,76 @@ import { Button, Card } from '../../components/ui';
 import { getAglomachines } from '../../redux/actions/current';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { currentSlice } from '../../redux/slices/current';
-import { IAglomachine, IExhauster } from '../../redux/slices/types';
+import { IAglomachine, IAglomachines, IExhauster } from '../../redux/slices/types';
 import { Rotor } from './Rotor';
 
 export function MenuPage() {
+    const aglomachines = useAppSelector((state) => state.current.aglomachines);
+
     return (
         <Card className={'scrollbar m-4 h-full overflow-y-auto'}>
-            <PageHeaderLayout className={'flex items-center gap-4'}>
-                <div className={'rounded-lg bg-yellow-600 p-2 text-white'}>
-                    <DocsIcon className={'h-4 w-4 fill-yellow-300'} />
+            <PageHeaderLayout className={'flex items-center justify-between'}>
+                <div className={'flex items-center gap-4'}>
+                    <div className={'rounded-lg bg-yellow-600 p-2 text-white'}>
+                        <DocsIcon className={'h-4 w-4 fill-yellow-300'} />
+                    </div>
+                    <div className={'text-sm font-medium'}>Главный экран</div>
                 </div>
-                <div className={'text-sm font-medium'}>Главный экран</div>
+                <div>
+                    <Timer
+                        diff={
+                            aglomachines?.moment
+                                ? new Date((new Date() as any) - (new Date(aglomachines.moment) as any))
+                                : null
+                        }
+                    />
+                </div>
             </PageHeaderLayout>
             <div className={'p-2'}>
                 <Statuses />
-                <Machines />
+                <Machines aglomachines={aglomachines} />
             </div>
         </Card>
+    );
+}
+
+interface TimerProps {
+    diff: Date | null;
+}
+
+function Timer(props: TimerProps) {
+    const [diff, setDiff] = useState(props.diff);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDiff((prev) => {
+                if (!prev) {
+                    clearInterval(interval);
+                    return null;
+                }
+
+                return new Date(
+                    prev.getFullYear(),
+                    prev.getMonth(),
+                    prev.getDate(),
+                    prev.getHours(),
+                    prev.getMinutes(),
+                    prev.getSeconds() + 1,
+                );
+            });
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
+    return (
+        diff && (
+            <div
+                className={'mt-2 text-xs font-light text-gray-900'}
+            >{`Информация была актуальна ${diff.getMinutes()}м. ${diff.getSeconds()}с. назад`}</div>
+        )
     );
 }
 
@@ -65,7 +118,7 @@ export function Statuses() {
         <div className={'flex items-center justify-end gap-3'}>
             {items.map((item) => {
                 return (
-                    <div key={item.title} className={'t flex items-center text-sm text-gray-900'}>
+                    <div key={item.title} className={'flex items-center  text-sm text-gray-900'}>
                         {item.letter}
                         {item.icon}
                         <div className={'ml-2 font-extralight'}>{item.title}</div>
@@ -76,21 +129,27 @@ export function Statuses() {
     );
 }
 
-export function Machines() {
-    const aglomachines = useAppSelector((state) => state.current.aglomachines);
+interface MachinesProps {
+    aglomachines?: IAglomachines;
+}
 
+export function Machines({ aglomachines }: MachinesProps) {
     return (
-        <div className={'mt-4 grid grid-cols-3 gap-8'}>
-            {aglomachines &&
-                Object.keys(aglomachines).map((aglomachineseyName) => {
-                    return (
-                        <AglMachine
-                            name={aglomachineseyName}
-                            key={aglomachineseyName}
-                            aglMachine={aglomachines[aglomachineseyName]}
-                        />
-                    );
-                })}
+        <div>
+            <div className={'mt-4 grid grid-cols-3 gap-8'}>
+                {aglomachines &&
+                    Object.keys(aglomachines)
+                        .filter((item) => item !== 'moment')
+                        .map((aglomachineseyName) => {
+                            return (
+                                <AglMachine
+                                    name={aglomachineseyName}
+                                    key={aglomachineseyName}
+                                    aglMachine={aglomachines[aglomachineseyName]}
+                                />
+                            );
+                        })}
+            </div>
         </div>
     );
 }
@@ -166,54 +225,7 @@ export function Exhauster(props: ExhausterProps) {
                     dateChangeRoter={props.exhauster.dateChangeRoter}
                     lastChangeRoter={props.exhauster.lastChangeRoter}
                 />
-                <Timer
-                    diff={
-                        props.exhauster.moment
-                            ? new Date((new Date() as any) - (new Date(props.exhauster.moment) as any))
-                            : null
-                    }
-                />
             </div>
         </div>
-    );
-}
-
-interface TimerProps {
-    diff: Date | null;
-}
-
-function Timer(props: TimerProps) {
-    const [diff, setDiff] = useState(props.diff);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setDiff((prev) => {
-                if (!prev) {
-                    clearInterval(interval);
-                    return null;
-                }
-
-                return new Date(
-                    prev.getFullYear(),
-                    prev.getMonth(),
-                    prev.getDate(),
-                    prev.getHours(),
-                    prev.getMinutes(),
-                    prev.getSeconds() + 1,
-                );
-            });
-        }, 1000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, []);
-
-    return (
-        diff && (
-            <div
-                className={'mt-2 text-xs font-light text-gray-900'}
-            >{`Информация была актуальна ${diff.getMinutes()}м. ${diff.getSeconds()}с. назад`}</div>
-        )
     );
 }
