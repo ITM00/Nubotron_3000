@@ -50,20 +50,21 @@ async def pull_history(topic):
         mapping = consumer_history.offsets_for_times(partition_to_timestamp)
         for partition, ts in mapping.items():
             end_offset = end_offsets.get(partition)
-            consumer_history.seek(partition, ts[0])
-            for msg in consumer_history:
-                my_bytes_value = msg.value
-                my_json = my_bytes_value.decode("utf8").replace("'", '"')
-                data = json.loads(my_json)
-                date_time = str(data["moment"].replace("T", " ").split(".")[0])
-                s = json.dumps(data, indent=4, sort_keys=True)
-                cur.execute(
-                    f"INSERT INTO consumer_data (d_create, data) VALUES('{date_time}', '{s}')"
-                )
-                if msg.offset == end_offset - 1:
-                    consumer_history.close()
-                    break
+            if ts:
+                consumer_history.seek(partition, ts[0])
+                for msg in consumer_history:
+                    my_bytes_value = msg.value
+                    my_json = my_bytes_value.decode("utf8").replace("'", '"')
+                    data = json.loads(my_json)
+                    date_time = str(data["moment"].replace("T", " ").split(".")[0])
+                    s = json.dumps(data, indent=4, sort_keys=True)
+                    cur.execute(
+                        f"INSERT INTO consumer_data (d_create, data) VALUES('{date_time}', '{s}')"
+                    )
+                    if msg.offset == end_offset - 1:
+                        consumer_history.close()
+                        break
 
-            conn.commit()
-            conn.close()
-            cur.close()
+                conn.commit()
+                conn.close()
+                cur.close()
