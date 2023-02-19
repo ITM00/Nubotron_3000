@@ -1260,7 +1260,7 @@ def map_exauster_data(data):
         "1": {},
         "2": {},
         "3": {},
-        "moment": datetime.strftime(data.get("moment"), "%Y-%m-%d %H:%m:%s"),
+        "moment": data.get("moment").isoformat(),
     }
     aglo_exg_map = {
         "У-171": "1",

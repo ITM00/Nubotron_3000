@@ -71,33 +71,36 @@ def get_all_data(start: str, end: str, interval: str, request: Request):
         user="postgres",
         password="postgres",
     )
-
+    json_to_front = 400
+    start_id = m_id = None
     start_date = start.replace("T", " ")[:16]
     finish_date = end.replace("T", " ")[:16]
     step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
 
     cur = conn.cursor()
     cur.execute(f"SELECT id from consumer_data where d_create::text like '{start_date}%'")
-    satrt_id = cur.fetchall()[0][0]
+    satrt_id = cur.fetchall()
+    if satrt_id and satrt_id[0] and satrt_id[0][0]:
+        start_id = satrt_id[0][0]
 
     cur.execute(f"SELECT id from consumer_data where d_create::text like '{finish_date}%'")
-    max_id = cur.fetchall()[0][0]
+    max_id = cur.fetchall()
+    if max_id and max_id[0] and max_id[0][0]:
+        m_id = max_id[0][0]
+    if start_id and m_id:
+        ids = tuple([i for i in range(start_id, m_id+1, step)])
+        if len(ids) < 1500:
+            cur.execute(f"SELECT d_create, data from consumer_data where id in {ids}")
+            result = cur.fetchall()
 
-    ids = tuple([i for i in range(satrt_id, max_id+1, step)])
-    if len(ids) < 1500:
-        cur.execute(f"SELECT d_create, data from consumer_data where id in {ids}")
-        result = cur.fetchall()
+            to_front = []
+            for element in result:
+                mapped = map_exauster_data({"moment": element[0], "data":element[1]})
+                second_part = mapped['1']['У-171']
+                second_part['moment'] = mapped['moment'].isoformat()
+                to_front.append(second_part)
 
-        to_front = []
-        for element in result:
-            mapped = map_exauster_data({"moment": element[0], "data":element[1]})
-            second_part = mapped['1']['У-171']
-            second_part['moment'] = mapped['moment']
-            to_front.append(second_part)
-
-        json_to_front = json.dumps(to_front, indent=4, sort_keys=True, default=str)
-    else:
-        json_to_front = 400
+            json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
 
     return {"request": json_to_front}
 
