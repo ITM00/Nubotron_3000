@@ -169,9 +169,9 @@ def get_data_for_predict(start: str, end: str, interval: str):
         if len(ids) < 1500:
             cur.execute(f"SELECT d_create, data from consumer_data where id in {ids}")
             result = cur.fetchall()
-            json = json.dumps(result, indent=4, sort_keys=True)
+            result_json = json.dumps(result, indent=4, sort_keys=True)
 
-    return json
+    return result_json
 
 @app.get('/predict/')
 def get_data_from_model():
