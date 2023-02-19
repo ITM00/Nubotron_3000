@@ -29,6 +29,20 @@
 
 Клонируйте репозиторий
 
+Создайте файл
+
+    /backend/app/settings.py
+
+Пропишите в нем следующие переменные
+
+    GROUP_ID = 
+    BOOTSTRAP_SERVERS = 
+    SECURITY_PROTOCOL = 
+    SASL_MECHANISM = 
+    SASL_PLAIN_USERNAME = 
+    SASL_PLAIN_PASSWORD = 
+    TOPIC = 
+
 Поместите файл с сертификатом для подключения к Кафке в папку проекта
 
     /backend/app/CA.crt
