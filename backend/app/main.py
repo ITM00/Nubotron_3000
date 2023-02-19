@@ -11,7 +11,7 @@ from .db_interactions import add_data_in_db, get_last_record_from_db
 from .mapper import map_exauster_data
 from .predict import predict
 from .pull_history import pull_history
-import settings
+from .settings import *
 
 app = FastAPI()
 manager = ConnectionManager()
@@ -21,13 +21,13 @@ loop = asyncio.get_event_loop()
 context = create_ssl_context(cafile="app/CA.crt")
 
 consumer = AIOKafkaConsumer(
-    settings.TOPIC,
-    group_id=settings.GROUP_ID,
-    bootstrap_servers=settings.BOOTSTRAP_SERVERS,
-    security_protocol=settings.SECURITY_PROTOCOL,
-    sasl_mechanism=settings.SASL_MECHANISM,
-    sasl_plain_username=settings.SASL_PLAIN_USERNAME,
-    sasl_plain_password=settings.SASL_PLAIN_PASSWORD,
+    TOPIC,
+    group_id=GROUP_ID,
+    bootstrap_servers=BOOTSTRAP_SERVERS,
+    security_protocol=SECURITY_PROTOCOL,
+    sasl_mechanism=SASL_MECHANISM,
+    sasl_plain_username=SASL_PLAIN_USERNAME,
+    sasl_plain_password=SASL_PLAIN_PASSWORD,
     ssl_context=context,
 )
 
@@ -68,7 +68,7 @@ async def consume() -> None:
 @app.on_event("startup")
 async def startup() -> None:
     """Ставит задачу на пожирание сообщений из кафки при запуске app"""
-    await pull_history(settings.TOPIC)
+    await pull_history(TOPIC)
     loop.create_task(consume())
 
 
