@@ -49,7 +49,7 @@ async def consume() -> None:
 @app.on_event("startup")
 async def startup() -> None:
     """Ставит задачу на пожирание сообщений из кафки при запуске app"""
-    await pull_history(topic)
+    await pull_history(settings.TOPIC)
     loop.create_task(consume())
 
 
