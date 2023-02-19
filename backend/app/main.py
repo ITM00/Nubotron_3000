@@ -4,6 +4,7 @@ import json
 import psycopg2
 from aiokafka import AIOKafkaConsumer
 from aiokafka.helpers import create_ssl_context
+from datetime import datetime
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 
 from .connection_manager import ConnectionManager
@@ -135,8 +136,47 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
         await manager.broadcast(resp)
 
 
+def get_data_for_predict(start: str, end: str, interval: str):
+    conn = psycopg2.connect(
+        host="db",
+        port=5432,
+        database="postgres",
+        user="postgres",
+        password="postgres",
+    )
+
+    start_id = m_id = None
+    start_date = start.replace("T", " ")[:16]   # strptime
+    finish_date = end.replace("T", " ")[:16]    # strptime
+    step = int(interval[:-1]) if interval.endswith("m") else int(interval[:-1]) * 60
+
+    cur = conn.cursor()
+    cur.execute(
+        f"SELECT id from consumer_data where d_create::text like '{start_date}%'"
+    )
+    satrt_id = cur.fetchall()
+    if satrt_id and satrt_id[0] and satrt_id[0][0]:
+        start_id = satrt_id[0][0]
+
+    cur.execute(
+        f"SELECT id from consumer_data where d_create::text like '{finish_date}%'"
+    )
+    max_id = cur.fetchall()
+    if max_id and max_id[0] and max_id[0][0]:
+        m_id = max_id[0][0]
+    if start_id and m_id:
+        ids = tuple([i for i in range(start_id, m_id + 1, step)])
+        if len(ids) < 1500:
+            cur.execute(f"SELECT d_create, data from consumer_data where id in {ids}")
+            result = cur.fetchall()
+            json = json.dumps(result, indent=4, sort_keys=True)
+
+    return json
+
 @app.get('/predict/')
 def get_data_from_model():
-    sample = json.load("./sample.json")
+    currentdate = datetime.today()
+    start_day = currentdate.combine(currentdate.date(), currentdate.min.time())
+    sample = get_data_for_predict(start_day, currentdate, '1h')
     prediction = predict(sample)
     return prediction
