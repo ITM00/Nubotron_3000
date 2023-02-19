@@ -9,6 +9,7 @@ from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from .connection_manager import ConnectionManager
 from .db_interactions import add_data_in_db, get_last_record_from_db
 from .mapper import map_exauster_data
+from .predict import predict
 from .pull_history import pull_history
 import settings
 
@@ -29,6 +30,24 @@ consumer = AIOKafkaConsumer(
     sasl_plain_password=settings.SASL_PLAIN_PASSWORD,
     ssl_context=context,
 )
+
+
+class NextFailDate(BaseModel):
+    """
+    Input features validation for the ML model
+    """
+    hor_vibr_7: float
+    ver_vibr_7: float
+    hor_vibr_8: float
+    ver_vibr_8: float
+    av_hor_vibr_7: float
+    av_ver_vibr_7: float
+    av_hor_vibr_8: float
+    av_ver_vibr_8: float
+    sd_hor_vibr_7: float
+    sd_ver_vibr_7: float
+    sd_hor_vibr_8: float
+    sd_ver_vibr_8: float
 
 
 async def consume() -> None:
@@ -132,3 +151,10 @@ async def websocket_endpoint(websocket: WebSocket) -> None:
         resp = map_exauster_data(data)
         manager.disconnect(websocket)
         await manager.broadcast(resp)
+
+
+@app.get('/predict/')
+def get_data_from_model():
+    sample = json.load("./sample.json")
+    prediction = predict(sample)
+    return prediction

@@ -33,3 +33,15 @@ aiokafka[snappy]
 black
 pandas
 joblib
+tenacity==8.2.1
+scipy==1.10.0
+pyparsing==3.0.9
+Pillow==9.4.0
+kiwisolver==1.4.4
+graphviz==0.20.1
+fonttools==4.38.0
+cycler==0.11.0
+contourpy==1.0.7
+plotly==5.13.0
+matplotlib==3.7.0
+catboost
