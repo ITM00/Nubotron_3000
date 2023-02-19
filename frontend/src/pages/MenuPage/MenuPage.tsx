@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ArrowRightIcon, DocsIcon, RadioIcon, ThermometerIcon, WaterIcon } from '../../components/icons';
@@ -166,7 +166,54 @@ export function Exhauster(props: ExhausterProps) {
                     dateChangeRoter={props.exhauster.dateChangeRoter}
                     lastChangeRoter={props.exhauster.lastChangeRoter}
                 />
+                <Timer
+                    diff={
+                        props.exhauster.moment
+                            ? new Date((new Date() as any) - (new Date(props.exhauster.moment) as any))
+                            : null
+                    }
+                />
             </div>
         </div>
+    );
+}
+
+interface TimerProps {
+    diff: Date | null;
+}
+
+function Timer(props: TimerProps) {
+    const [diff, setDiff] = useState(props.diff);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setDiff((prev) => {
+                if (!prev) {
+                    clearInterval(interval);
+                    return null;
+                }
+
+                return new Date(
+                    prev.getFullYear(),
+                    prev.getMonth(),
+                    prev.getDate(),
+                    prev.getHours(),
+                    prev.getMinutes(),
+                    prev.getSeconds() + 1,
+                );
+            });
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
+    return (
+        diff && (
+            <div
+                className={'mt-2 text-xs font-light text-gray-900'}
+            >{`Информация была актуальна ${diff.getMinutes()}м. ${diff.getSeconds()}с. назад`}</div>
+        )
     );
 }

@@ -6,6 +6,7 @@ const initialState: State = {
     // aglomachines: {
     //     '1': {
     //         'У-171': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 60.399993896484375, state: 'normal' },
@@ -58,6 +59,7 @@ const initialState: State = {
     //             status: 'run',
     //         },
     //         'У-172': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 50.80000305175781, state: 'normal' },
@@ -112,6 +114,7 @@ const initialState: State = {
     //     },
     //     '2': {
     //         'Ф-171': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 45.0, state: 'normal' },
@@ -164,6 +167,7 @@ const initialState: State = {
     //             status: 'run',
     //         },
     //         'Ф-172': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 50.80000305175781, state: 'normal' },
@@ -218,6 +222,7 @@ const initialState: State = {
     //     },
     //     '3': {
     //         'Х-171': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 41.399993896484375, state: 'normal' },
@@ -270,6 +275,7 @@ const initialState: State = {
     //             status: 'run',
     //         },
     //         'Х-172': {
+    //             moment: 'Sun Feb 19 2023 03:07:18 GMT+0300 (Moscow Standard Time)',
     //             bearing: {
     //                 '1': {
     //                     T: { value: 52.600006103515625, state: 'normal' },

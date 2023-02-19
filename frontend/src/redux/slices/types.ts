@@ -78,6 +78,7 @@ export interface IExhauster {
         state: 'danger' | 'normal' | 'warning' | null;
     };
     status: 'run' | 'stop';
+    moment: string | null;
 }
 
 export interface IAglomachine {
