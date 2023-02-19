@@ -27,16 +27,36 @@
 
 <h2>Запуск</h2>
 
+Клонируйте репозиторий
+
+Создайте файл
+
+    /backend/app/settings.py
+
+Пропишите в нем следующие переменные
+
+    GROUP_ID = 
+    BOOTSTRAP_SERVERS = 
+    SECURITY_PROTOCOL = 
+    SASL_MECHANISM = 
+    SASL_PLAIN_USERNAME = 
+    SASL_PLAIN_PASSWORD = 
+    TOPIC = 
+
+Поместите файл с сертификатом для подключения к Кафке в папку проекта
+
+    /backend/app/CA.crt
+
+Соберите контейнеры
+
     docker-compose up -d --build
+
+Пройдите на
+
+    http://localhost:8889/
 
 ---
 
 <h2>Стек</h2>
 
-<img src="images/postgres.png"  width="30%" height="30%">
-
-<img src="images/fastapi.png"  width="30%" height="30%">
-
-<img src="images/catboost.png"  width="30%" height="30%">
-
-<img src="images/reactjs.png"  width="30%" height="30%">
+<img src="images/postgres.png"  width="20%" height="20%"><img src="images/fastapi.png"  width="25%" height="25%"><img src="images/catboost.png"  width="30%" height="30%"><img src="images/reactjs.png"  width="25%" height="25%">
