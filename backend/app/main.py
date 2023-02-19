@@ -95,7 +95,7 @@ def get_all_data(start: str, end: str, interval: str, request: Request):
             second_part['moment'] = mapped['moment']
             to_front.append(second_part)
 
-        json_to_front = json.dumps(to_front, indent=4, sort_keys=True)
+        json_to_front = json.dumps(to_front, indent=4, sort_keys=True, default=str)
     else:
         json_to_front = 400
 

@@ -1,4 +1,5 @@
 
+from datetime import datetime
 from typing import Any, Union
 
 
@@ -1259,7 +1260,7 @@ def map_exauster_data(data):
         "1": {},
         "2": {},
         "3": {},
-        "moment": data.get("moment"),
+        "moment": datetime.strftime(data.get("moment"), "%Y-%m-%d %H:%m:%s"),
     }
     aglo_exg_map = {
         "У-171": "1",
