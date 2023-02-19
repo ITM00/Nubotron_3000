@@ -33,10 +33,6 @@
 
 <h2>Стек</h2>
 
-<img src="images/postgres.png"  width="30%" height="30%">
+<img src="images/postgres.png"  width="20%" height="20%"><img src="images/fastapi.png"  width="30%" height="30%">
 
-<img src="images/fastapi.png"  width="30%" height="30%">
-
-<img src="images/catboost.png"  width="30%" height="30%">
-
-<img src="images/reactjs.png"  width="30%" height="30%">
+<img src="images/catboost.png"  width="30%" height="30%"><img src="images/reactjs.png"  width="30%" height="30%">
