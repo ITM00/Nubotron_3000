@@ -1,13 +1,14 @@
-
 from datetime import datetime
 from typing import Any, Union
 
 
-def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict[str, dict[str, str]]]], str]]:
+def map_data_from_kafka(
+    data: dict,
+) -> dict[str, Union[dict[str, Union[str, dict[str, dict[str, str]]]], str]]:
     """Получает json с данными кафки из бд и приводит его к читаемому состоянию"""
     exg_unit_kafka_data_map = {
         "У-171": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[2:27]"),
@@ -184,12 +185,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[2:42]"),
-                "temperature_before": data.get("SM_Exgauster\\[2:41]"),
+                    "temperature_after": data.get("SM_Exgauster\\[2:42]"),
+                    "temperature_before": data.get("SM_Exgauster\\[2:41]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[2:37]"),
-                "temperature_before": data.get("SM_Exgauster\\[2:36]"),
+                    "temperature_after": data.get("SM_Exgauster\\[2:37]"),
+                    "temperature_before": data.get("SM_Exgauster\\[2:36]"),
                 },
             },
             "gas_collector": {
@@ -211,10 +212,10 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[4:0]"),
                 "oil_pressure": data.get("SM_Exgauster\\[4:1]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[2.0]")
+            "exgauster_status": data.get("SM_Exgauster\\[2.0]"),
         },
         "У-172": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[2:43]"),
@@ -391,12 +392,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[2:60]"),
-                "temperature_before": data.get("SM_Exgauster\\[2:59]"),
+                    "temperature_after": data.get("SM_Exgauster\\[2:60]"),
+                    "temperature_before": data.get("SM_Exgauster\\[2:59]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[2:54]"),
-                "temperature_before": data.get("SM_Exgauster\\[2:53]"),
+                    "temperature_after": data.get("SM_Exgauster\\[2:54]"),
+                    "temperature_before": data.get("SM_Exgauster\\[2:53]"),
                 },
             },
             "gas_collector": {
@@ -418,10 +419,10 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[4:7]"),
                 "oil_pressure": data.get("SM_Exgauster\\[4:8]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[2.1]")
+            "exgauster_status": data.get("SM_Exgauster\\[2.1]"),
         },
         "Ф-171": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[0:27]"),
@@ -598,12 +599,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[0:42]"),
-                "temperature_before": data.get("SM_Exgauster\\[0:41]"),
+                    "temperature_after": data.get("SM_Exgauster\\[0:42]"),
+                    "temperature_before": data.get("SM_Exgauster\\[0:41]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[0:37]"),
-                "temperature_before": data.get("SM_Exgauster\\[0:36]"),
+                    "temperature_after": data.get("SM_Exgauster\\[0:37]"),
+                    "temperature_before": data.get("SM_Exgauster\\[0:36]"),
                 },
             },
             "gas_collector": {
@@ -625,10 +626,10 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[1:0]"),
                 "oil_pressure": data.get("SM_Exgauster\\[1:1]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[0.0]")
+            "exgauster_status": data.get("SM_Exgauster\\[0.0]"),
         },
         "Ф-172": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[0:43]"),
@@ -805,12 +806,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[0:60]"),
-                "temperature_before": data.get("SM_Exgauster\\[0:59]"),
+                    "temperature_after": data.get("SM_Exgauster\\[0:60]"),
+                    "temperature_before": data.get("SM_Exgauster\\[0:59]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[0:54]"),
-                "temperature_before": data.get("SM_Exgauster\\[0:53]"),
+                    "temperature_after": data.get("SM_Exgauster\\[0:54]"),
+                    "temperature_before": data.get("SM_Exgauster\\[0:53]"),
                 },
             },
             "gas_collector": {
@@ -832,10 +833,10 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[1:7]"),
                 "oil_pressure": data.get("SM_Exgauster\\[1:8]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[0.1]")
+            "exgauster_status": data.get("SM_Exgauster\\[0.1]"),
         },
         "Х-171": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[3:27]"),
@@ -1012,12 +1013,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[3:42]"),
-                "temperature_before": data.get("SM_Exgauster\\[3:41]"),
+                    "temperature_after": data.get("SM_Exgauster\\[3:42]"),
+                    "temperature_before": data.get("SM_Exgauster\\[3:41]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[3:37]"),
-                "temperature_before": data.get("SM_Exgauster\\[3:36]"),
+                    "temperature_after": data.get("SM_Exgauster\\[3:37]"),
+                    "temperature_before": data.get("SM_Exgauster\\[3:36]"),
                 },
             },
             "gas_collector": {
@@ -1039,10 +1040,10 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[5:0]"),
                 "oil_pressure": data.get("SM_Exgauster\\[5:1]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[3.0]")
+            "exgauster_status": data.get("SM_Exgauster\\[3.0]"),
         },
         "Х-172": {
-            "podshipnics":{
+            "podshipnics": {
                 "podshipnik_1": {
                     "tempreture": {
                         "temperature": data.get("SM_Exgauster\\[3:43]"),
@@ -1219,12 +1220,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
             },
             "freezer": {
                 "oil": {
-                "temperature_after": data.get("SM_Exgauster\\[3:60]"),
-                "temperature_before": data.get("SM_Exgauster\\[3:59]"),
+                    "temperature_after": data.get("SM_Exgauster\\[3:60]"),
+                    "temperature_before": data.get("SM_Exgauster\\[3:59]"),
                 },
                 "water": {
-                "temperature_after": data.get("SM_Exgauster\\[3:54]"),
-                "temperature_before": data.get("SM_Exgauster\\[3:53]"),
+                    "temperature_after": data.get("SM_Exgauster\\[3:54]"),
+                    "temperature_before": data.get("SM_Exgauster\\[3:53]"),
                 },
             },
             "gas_collector": {
@@ -1246,11 +1247,12 @@ def map_data_from_kafka(data: dict) -> dict[str, Union[dict[str, Union[str, dict
                 "oil_level": data.get("SM_Exgauster\\[5:7]"),
                 "oil_pressure": data.get("SM_Exgauster\\[5:8]"),
             },
-            "exgauster_status": data.get("SM_Exgauster\\[3.1]")
+            "exgauster_status": data.get("SM_Exgauster\\[3.1]"),
         },
     }
 
     return exg_unit_kafka_data_map
+
 
 def map_exauster_data(data):
     """Получает json с данными кафки из бд и форматирует его для отправки по вебсокету"""
@@ -1271,20 +1273,24 @@ def map_exauster_data(data):
         "Х-172": "3",
     }
     for exgauster_name, aglovec_num in aglo_exg_map.items():
-        res[aglovec_num].update({
-            exgauster_name: {
-                "bearing": {},
-                "coolant": {},
-                "mainPrivod": {},
-                "masloBack": {},
-                "truba": {},
+        res[aglovec_num].update(
+            {
+                exgauster_name: {
+                    "bearing": {},
+                    "coolant": {},
+                    "mainPrivod": {},
+                    "masloBack": {},
+                    "truba": {},
+                }
             }
-        })
+        )
         exgauster_units = exg_unit_kafka_data_map[exgauster_name]
         for unit, sensors in exgauster_units.items():
             if unit == "podshipnics":
                 for podshipnic, sensors_data in sensors.items():
-                    res[aglovec_num][exgauster_name]["bearing"].update({podshipnic[-1]: {}})
+                    res[aglovec_num][exgauster_name]["bearing"].update(
+                        {podshipnic[-1]: {}}
+                    )
                     for sensor_param, sensor_data in sensors_data.items():
                         if sensor_param == "tempreture":
                             sensor_val = sensor_data.get("temperature")
@@ -1294,7 +1300,9 @@ def map_exauster_data(data):
                                 status = "danger"
                             else:
                                 status = "normal"
-                            res[aglovec_num][exgauster_name]["bearing"][podshipnic[-1]].update({"T": {"value": sensor_val, "state": status}})
+                            res[aglovec_num][exgauster_name]["bearing"][
+                                podshipnic[-1]
+                            ].update({"T": {"value": sensor_val, "state": status}})
 
                         elif sensor_param == "vibro":
                             for sens_roam, sens_data in sensor_data.items():
@@ -1306,45 +1314,81 @@ def map_exauster_data(data):
                                     name = "B"
 
                                 sensor_val = sens_data.get(f"vibration_{sens_roam}")
-                                if sensor_val and sensor_val >= sens_data.get(f"warning_max") and sensor_val < sens_data.get(f"alarm_max"):
+                                if (
+                                    sensor_val
+                                    and sensor_val >= sens_data.get(f"warning_max")
+                                    and sensor_val < sens_data.get(f"alarm_max")
+                                ):
                                     status = "warning"
-                                elif sensor_val and sensor_val >= sens_data.get(f"alarm_max"):
+                                elif sensor_val and sensor_val >= sens_data.get(
+                                    f"alarm_max"
+                                ):
                                     status = "danger"
                                 else:
                                     status = "normal"
 
-                                res[aglovec_num][exgauster_name]["bearing"][podshipnic[-1]].update({name: {"value": sensor_val, "state": status}})
+                                res[aglovec_num][exgauster_name]["bearing"][
+                                    podshipnic[-1]
+                                ].update({name: {"value": sensor_val, "state": status}})
 
             elif unit == "freezer":
                 for cooler_item, cooler_data in sensors.items():
                     if cooler_item == "oil":
                         for o_param, o_val in cooler_data.items():
-                            c_name = "after2" if o_param == "temperature_after" else "before2"
+                            c_name = (
+                                "after2"
+                                if o_param == "temperature_after"
+                                else "before2"
+                            )
                             c_state = "warning" if o_val and o_val >= 30 else "normal"
-                            res[aglovec_num][exgauster_name]["coolant"].update({c_name: {"value": o_val, "state": c_state}})
+                            res[aglovec_num][exgauster_name]["coolant"].update(
+                                {c_name: {"value": o_val, "state": c_state}}
+                            )
 
                     else:
                         for w_param, w_val in cooler_data.items():
-                            c_name = "after1" if w_param == "temperature_after" else "before1"
+                            c_name = (
+                                "after1"
+                                if w_param == "temperature_after"
+                                else "before1"
+                            )
                             c_state = "warning" if w_val and w_val >= 30 else "normal"
-                            res[aglovec_num][exgauster_name]["coolant"].update({c_name: {"value": w_val, "state": c_state}})
+                            res[aglovec_num][exgauster_name]["coolant"].update(
+                                {c_name: {"value": w_val, "state": c_state}}
+                            )
 
             elif unit in ["gas_collector", "gas_valve"]:
                 if unit == "gas_collector":
                     for gc_param, gc_val in sensors.items():
-                        t_name = "temperature" if gc_param == "temperature_before" else "vacuum"
-                        res[aglovec_num][exgauster_name]["truba"].update({t_name: gc_val})
+                        t_name = (
+                            "temperature"
+                            if gc_param == "temperature_before"
+                            else "vacuum"
+                        )
+                        res[aglovec_num][exgauster_name]["truba"].update(
+                            {t_name: gc_val}
+                        )
                 else:
-                    res[aglovec_num][exgauster_name]["truba"].update({"damper": sensors.get("gas_valve_position")})
+                    res[aglovec_num][exgauster_name]["truba"].update(
+                        {"damper": sensors.get("gas_valve_position")}
+                    )
 
             elif unit == "main_drive":
                 for drive_sensor_name, drive_sensor_val in sensors.items():
                     if drive_sensor_name == "rotor_current":
                         d_name = "I"
                         if exgauster_name in {"exgauster_u171", "exgauster_u172"}:
-                            d_state = "warning" if drive_sensor_val and drive_sensor_val > 250 else "normal"
+                            d_state = (
+                                "warning"
+                                if drive_sensor_val and drive_sensor_val > 250
+                                else "normal"
+                            )
                         else:
-                            d_state = "warning" if drive_sensor_val and drive_sensor_val > 200 else "normal"
+                            d_state = (
+                                "warning"
+                                if drive_sensor_val and drive_sensor_val > 200
+                                else "normal"
+                            )
                     elif drive_sensor_name == "rotor_voltage":
                         d_name = "URotor"
                         d_state = "normal"
@@ -1352,7 +1396,11 @@ def map_exauster_data(data):
                         d_name = "IDvig"
                         if drive_sensor_val and drive_sensor_val >= 280:
                             d_state = "danger"
-                        elif drive_sensor_val and drive_sensor_val >= 230 and drive_sensor_val < 280:
+                        elif (
+                            drive_sensor_val
+                            and drive_sensor_val >= 230
+                            and drive_sensor_val < 280
+                        ):
                             d_state = "warning"
                         else:
                             d_state = "normal"
@@ -1360,7 +1408,9 @@ def map_exauster_data(data):
                         d_name = "UStater"
                         d_state = "normal"
 
-                    res[aglovec_num][exgauster_name]["mainPrivod"].update({d_name: {"value": drive_sensor_val, "state": d_state}})
+                    res[aglovec_num][exgauster_name]["mainPrivod"].update(
+                        {d_name: {"value": drive_sensor_val, "state": d_state}}
+                    )
 
             elif unit == "oil_sys":
 
@@ -1381,9 +1431,16 @@ def map_exauster_data(data):
                             oil_state = "danger"
                         else:
                             oil_state = "normal"
-                    res[aglovec_num][exgauster_name]["masloBack"].update({maslo_name: {"value": oil_val, "state": oil_state}})
+                    res[aglovec_num][exgauster_name]["masloBack"].update(
+                        {maslo_name: {"value": oil_val, "state": oil_state}}
+                    )
 
-        res[aglovec_num][exgauster_name]["prognozRouter"] = {"days": None, "state": None}
-        res[aglovec_num][exgauster_name]["status"] = "run" if exgauster_units.get("exgauster_status") == 1.0 else "stop"
+        res[aglovec_num][exgauster_name]["prognozRouter"] = {
+            "days": None,
+            "state": None,
+        }
+        res[aglovec_num][exgauster_name]["status"] = (
+            "run" if exgauster_units.get("exgauster_status") == 1.0 else "stop"
+        )
 
     return res

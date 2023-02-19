@@ -1,9 +1,9 @@
-from kafka import KafkaConsumer, TopicPartition
 import json
-import psycopg2
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
+import psycopg2
+from dateutil.relativedelta import relativedelta
+from kafka import KafkaConsumer, TopicPartition
 
 """" При первом заупске приложения подтягиваем данные из кафки за последний час"""
 
@@ -27,11 +27,11 @@ async def pull_history(topic):
             return False
 
     consumer_history = KafkaConsumer(
-        bootstrap_servers='rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091',
+        bootstrap_servers="rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091",
         security_protocol="SASL_SSL",
         sasl_mechanism="SCRAM-SHA-512",
-        sasl_plain_username='9433_reader',
-        sasl_plain_password='eUIpgWu0PWTJaTrjhjQD3.hoyhntiK',
+        sasl_plain_username="9433_reader",
+        sasl_plain_password="eUIpgWu0PWTJaTrjhjQD3.hoyhntiK",
         ssl_cafile="app/CA.crt",
         api_version=(0, 11, 5),
     )
@@ -53,11 +53,13 @@ async def pull_history(topic):
             consumer_history.seek(partition, ts[0])
             for msg in consumer_history:
                 my_bytes_value = msg.value
-                my_json = my_bytes_value.decode('utf8').replace("'", '"')
+                my_json = my_bytes_value.decode("utf8").replace("'", '"')
                 data = json.loads(my_json)
-                date_time = str(data['moment'].replace('T', " ").split(".")[0])
+                date_time = str(data["moment"].replace("T", " ").split(".")[0])
                 s = json.dumps(data, indent=4, sort_keys=True)
-                cur.execute(f"INSERT INTO consumer_data (d_create, data) VALUES('{date_time}', '{s}')")
+                cur.execute(
+                    f"INSERT INTO consumer_data (d_create, data) VALUES('{date_time}', '{s}')"
+                )
                 if msg.offset == end_offset - 1:
                     consumer_history.close()
                     break
