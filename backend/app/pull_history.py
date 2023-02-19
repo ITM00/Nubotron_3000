@@ -4,6 +4,7 @@ from datetime import datetime
 import psycopg2
 from dateutil.relativedelta import relativedelta
 from kafka import KafkaConsumer, TopicPartition
+import settings
 
 """" При первом заупске приложения подтягиваем данные из кафки за последний час"""
 
@@ -27,11 +28,11 @@ async def pull_history(topic):
             return False
 
     consumer_history = KafkaConsumer(
-        bootstrap_servers="rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091",
-        security_protocol="SASL_SSL",
-        sasl_mechanism="SCRAM-SHA-512",
-        sasl_plain_username="9433_reader",
-        sasl_plain_password="eUIpgWu0PWTJaTrjhjQD3.hoyhntiK",
+        bootstrap_servers=settings.BOOTSTRAP_SERVERS,
+        security_protocol=settings.SECURITY_PROTOCOL,
+        sasl_mechanism=settings.SASL_MECHANISM,
+        sasl_plain_username=settings.SASL_PLAIN_USERNAME,
+        sasl_plain_password=settings.SASL_PLAIN_PASSWORD,
         ssl_cafile="app/CA.crt",
         api_version=(0, 11, 5),
     )

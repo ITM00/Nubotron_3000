@@ -10,23 +10,23 @@ from .connection_manager import ConnectionManager
 from .db_interactions import add_data_in_db, get_last_record_from_db
 from .mapper import map_exauster_data
 from .pull_history import pull_history
+import settings
 
 app = FastAPI()
 manager = ConnectionManager()
 
-topic = "zsmk-9433-dev-01"
 loop = asyncio.get_event_loop()
 
 context = create_ssl_context(cafile="app/CA.crt")
 
 consumer = AIOKafkaConsumer(
-    topic,
-    group_id="Nubotron_3000",
-    bootstrap_servers="rc1a-b5e65f36lm3an1d5.mdb.yandexcloud.net:9091",
-    security_protocol="SASL_SSL",
-    sasl_mechanism="SCRAM-SHA-512",
-    sasl_plain_username="9433_reader",
-    sasl_plain_password="eUIpgWu0PWTJaTrjhjQD3.hoyhntiK",
+    settings.TOPIC,
+    group_id=settings.GROUP_ID,
+    bootstrap_servers=settings.BOOTSTRAP_SERVERS,
+    security_protocol=settings.SECURITY_PROTOCOL,
+    sasl_mechanism=settings.SASL_MECHANISM,
+    sasl_plain_username=settings.SASL_PLAIN_USERNAME,
+    sasl_plain_password=settings.SASL_PLAIN_PASSWORD,
     ssl_context=context,
 )
 
